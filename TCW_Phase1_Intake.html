@@ -457,18 +457,18 @@ footer{
 </div>
 <div class="flow-page" id="step4">
   <div class="hero" style="padding-bottom:4rem">
-    <div class="designation-tag">Enrollment Complete</div>
+    <div class="designation-tag">Enrollment Submitted</div>
     <div style="display:flex;justify-content:center;margin:1.5rem 0;">
       <div style="width:110px;height:110px;border-radius:50%;border:2px solid var(--gold);
         display:flex;flex-direction:column;align-items:center;justify-content:center;
         background:linear-gradient(135deg,#1a1a1a,#0d0d0d);
         box-shadow:0 0 60px rgba(201,168,76,0.35);">
         <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold);line-height:1">✓</div>
-        <div style="font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--smoke);margin-top:.2rem">Active</div>
+        <div style="font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--smoke);margin-top:.2rem">Pending</div>
       </div>
     </div>
-    <h1 class="hero-title" id="confirmName">Welcome Aboard.</h1>
-    <p class="hero-sub" id="confirmSub">Your account is now officially active.</p>
+    <h1 class="hero-title" id="confirmName">Almost There.</h1>
+    <p class="hero-sub" id="confirmSub">Finish your payment in the Square tab — your account activates once payment is confirmed.</p>
   </div>
   <div class="section">
     <div style="background:var(--card);border:1px solid rgba(201,168,76,0.35);padding:2rem 2.25rem;margin-bottom:2rem;">
@@ -482,20 +482,20 @@ footer{
     </div>
     <div style="background:rgba(45,212,191,0.06);border:1px solid rgba(45,212,191,0.3);padding:1.5rem 2rem;margin-bottom:2rem;">
       <div style="font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);margin-bottom:.5rem">Your Client Portal Link</div>
-      <div style="font-size:.8rem;color:var(--smoke);margin-bottom:.75rem">Bookmark this link — it's also being emailed to you. Use it to track your Business Essentials checklist and updates anytime.</div>
+      <div style="font-size:.8rem;color:var(--smoke);margin-bottom:.75rem">Bookmark this link — it's also being emailed to you. Your Business Essentials checklist unlocks once our team confirms your payment.</div>
       <a id="conf_portal_link" href="#" style="font-size:.85rem;color:var(--teal);word-break:break-all;text-decoration:underline;">—</a>
     </div>
     <div class="section-label">What Happens Next</div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2.5rem;">
       <div style="background:var(--card);border:1px solid var(--border);padding:1.75rem;">
         <div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--gold);line-height:1;margin-bottom:.5rem">01</div>
-        <div style="font-size:.88rem;font-weight:500;margin-bottom:.35rem">Confirmation Email</div>
-        <div style="font-size:.78rem;color:var(--smoke);line-height:1.6">Invoice and contract sent to your email within minutes.</div>
+        <div style="font-size:.88rem;font-weight:500;margin-bottom:.35rem">Payment Confirmation</div>
+        <div style="font-size:.78rem;color:var(--smoke);line-height:1.6">Our team verifies your Square payment and confirms your account — usually within one business day.</div>
       </div>
       <div style="background:var(--card);border:1px solid var(--border);padding:1.75rem;">
         <div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--gold);line-height:1;margin-bottom:.5rem">02</div>
         <div style="font-size:.88rem;font-weight:500;margin-bottom:.35rem">Registered Agent Filed</div>
-        <div style="font-size:.78rem;color:var(--smoke);line-height:1.6">Your agent designation submitted to Texas SOS within 1 business day.</div>
+        <div style="font-size:.78rem;color:var(--smoke);line-height:1.6">Your agent designation submitted to Texas SOS within 1 business day of confirmed payment.</div>
       </div>
       <div style="background:var(--card);border:1px solid var(--border);padding:1.75rem;">
         <div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--gold);line-height:1;margin-bottom:.5rem">03</div>
@@ -505,7 +505,7 @@ footer{
       <div style="background:var(--card);border:1px solid var(--border);padding:1.75rem;">
         <div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--gold);line-height:1;margin-bottom:.5rem">04</div>
         <div style="font-size:.88rem;font-weight:500;margin-bottom:.35rem">Business Checklist Unlocked</div>
-        <div style="font-size:.78rem;color:var(--smoke);line-height:1.6">Your 20-step Business Essentials tracker goes live — Phase 2 begins.</div>
+        <div style="font-size:.78rem;color:var(--smoke);line-height:1.6">Your 20-step Business Essentials tracker goes live once payment is confirmed — Phase 2 begins.</div>
       </div>
     </div>
     <div style="background:rgba(46,204,113,0.05);border:1px solid rgba(46,204,113,0.25);padding:1.5rem 2rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
@@ -644,21 +644,27 @@ function getSquareLink() {
 function completeEnrollment() {
   if(!state.payPlan) { toast('Select a Payment Plan', 'Choose how you would like to pay before continuing.'); return; }
   const squareLink = getSquareLink();
+  // IMPORTANT: opening the Square tab does NOT mean the client actually paid.
+  // paymentStatus below is intentionally never set to "paid"/"completed" —
+  // real payment confirmation happens later, by a human, from the Client
+  // Portal's Admin Mode ("Payment Received" toggle -> fires a separate
+  // 'payment_confirmed' event). Any Zapier Path that marks the Airtable
+  // record as Paid must key off THAT event, not off enrollment_completed.
   let paymentStatus;
   if (SQUARE_CHECKOUT.enabled && squareLink) {
     window.open(squareLink, '_blank', 'noopener');
     toast('Opening Secure Checkout', 'Finish your payment in the Square tab, then come back here.');
-    paymentStatus = 'redirected_to_square';
+    paymentStatus = 'square_checkout_opened_pending_confirmation';
   } else if (SQUARE_CHECKOUT.enabled && !squareLink) {
     toast('Invoice To Follow', 'We will email your secure Square payment link to complete checkout.');
-    paymentStatus = 'square_link_missing';
+    paymentStatus = 'square_link_missing_pending_invoice';
   } else {
-    paymentStatus = 'invoice_manual';
+    paymentStatus = 'invoice_manual_pending';
   }
   const portalId = generatePortalId();
   const portalUrl = 'https://essential-distribution.com/TCW_Portal.html?id=' + portalId;
-  document.getElementById('confirmName').textContent = 'Welcome, ' + state.name.split(' ')[0] + '.';
-  document.getElementById('confirmSub').textContent = state.bizname + ' is officially active.';
+  document.getElementById('confirmName').textContent = 'Almost there, ' + state.name.split(' ')[0] + '.';
+  document.getElementById('confirmSub').textContent = state.bizname + ' — finish your payment in the Square tab. Your account activates once payment is confirmed.';
   document.getElementById('conf_name').textContent = state.name;
   document.getElementById('conf_email').textContent = state.email;
   document.getElementById('conf_biz').textContent = state.bizname;
@@ -686,6 +692,7 @@ function completeEnrollment() {
     payment_plan: state.payPlan,
     amount_due_today: state.payDue,
     payment_status: paymentStatus,
+    payment_confirmed: false,
     portal_id: portalId,
     portal_url: portalUrl
   });
