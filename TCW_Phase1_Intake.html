@@ -662,7 +662,7 @@ function completeEnrollment() {
     paymentStatus = 'invoice_manual_pending';
   }
   const portalId = generatePortalId();
-  const portalUrl = 'https://essential-distribution.com/TCW_Portal.html?id=' + portalId;
+  const portalUrl = 'https://onboard.essential-distribution.com/TCW_Portal.html?id=' + portalId;
   document.getElementById('confirmName').textContent = 'Almost there, ' + state.name.split(' ')[0] + '.';
   document.getElementById('confirmSub').textContent = state.bizname + ' — finish your payment in the Square tab. Your account activates once payment is confirmed.';
   document.getElementById('conf_name').textContent = state.name;
