@@ -1,1 +1,680 @@
-test
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Corporate Way — Client Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --black:#0a0a0a; --deep:#111111; --card:#161616; --border:#2a2a2a;
+  --gold:#C9A84C; --gold-light:#e8c96a; --gold-dim:rgba(201,168,76,0.12);
+  --white:#f5f0e8; --smoke:#999; --silver:#bbb;
+  --green:#2ecc71; --teal:#2dd4bf; --red:#e74c3c;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 80px,rgba(201,168,76,0.025) 80px,rgba(201,168,76,0.025) 81px),
+             repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(201,168,76,0.025) 80px,rgba(201,168,76,0.025) 81px);
+  pointer-events:none;z-index:0;
+}
+header{
+  position:sticky;top:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 3rem;height:64px;
+  border-bottom:1px solid var(--border);
+  background:rgba(10,10,10,0.97);backdrop-filter:blur(10px);
+}
+.header-brand{font-family:'Cormorant Garamond',serif;font-size:1rem;letter-spacing:.15em;text-transform:uppercase;color:var(--smoke);}
+.header-brand span{color:var(--gold);}
+.hdr-right{display:flex;align-items:center;gap:1rem;}
+.phase-badge{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:.3rem .9rem;}
+.alert-bell{
+  position:relative;cursor:pointer;font-size:1.1rem;
+  background:none;border:none;color:var(--smoke);padding:.4rem;
+  transition:color .2s;
+}
+.alert-bell:hover{color:var(--gold);}
+.alert-dot{
+  position:absolute;top:2px;right:2px;
+  width:8px;height:8px;border-radius:50%;background:var(--gold);
+  display:none;box-shadow:0 0 6px var(--gold);
+}
+@media(max-width:600px){header{padding:0 1.25rem;}}
+.tab-nav{
+  position:sticky;top:64px;z-index:99;
+  background:var(--deep);border-bottom:1px solid var(--border);
+  display:flex;overflow-x:auto;scrollbar-width:none;
+}
+.tab-nav::-webkit-scrollbar{display:none;}
+.tab-btn{
+  background:none;border:none;color:var(--smoke);
+  padding:.9rem 1.75rem;font-family:'DM Sans',sans-serif;
+  font-size:.65rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+  cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;
+}
+.tab-btn:hover{color:var(--white);}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+.tab-badge{
+  display:inline-block;background:var(--gold);color:var(--black);
+  font-size:.55rem;padding:1px 5px;margin-left:5px;vertical-align:middle;
+  border-radius:2px;
+}
+.page{display:none;position:relative;z-index:5;}
+.page.active{display:block;}
+.section{max-width:860px;margin:0 auto;padding:3rem 2rem 4rem;}
+.hero{
+  text-align:center;padding:3.5rem 2rem 2.5rem;
+  background:linear-gradient(180deg,rgba(201,168,76,0.06) 0%,transparent 100%);
+  border-bottom:1px solid var(--border);position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-180px;left:50%;transform:translateX(-50%);
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(201,168,76,0.1) 0%,transparent 70%);
+  pointer-events:none;
+}
+.designation-tag{
+  display:inline-block;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);border:1px solid var(--gold);padding:.3rem 1rem;margin-bottom:1.25rem;
+}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4.5vw,3.5rem);font-weight:300;line-height:1.1;margin-bottom:.6rem;}
+.hero-title em{color:var(--gold);font-style:italic;}
+.hero-sub{font-size:.85rem;color:var(--smoke);max-width:500px;margin:0 auto;line-height:1.7;}
+.admin-bar{
+  display:flex;align-items:center;gap:.75rem;
+  background:var(--card);border:1px solid var(--border);
+  padding:.75rem 1.25rem;margin-bottom:1.75rem;
+}
+.admin-bar label{display:flex;align-items:center;gap:.7rem;cursor:pointer;font-size:.78rem;color:var(--smoke);}
+.tog{width:38px;height:20px;background:#333;border-radius:10px;position:relative;cursor:pointer;transition:background .2s;}
+.tog.on{background:var(--gold);}
+.tog-knob{width:14px;height:14px;background:white;border-radius:50%;position:absolute;top:3px;left:3px;transition:left .2s;}
+.tog.on .tog-knob{left:21px;}
+.admin-active{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);border:1px solid var(--teal);padding:.15rem .5rem;margin-left:auto;display:none;}
+.prog-row{display:flex;align-items:center;gap:1.25rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+.prog-wrap{flex:1;min-width:180px;}
+.prog-labels{display:flex;justify-content:space-between;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--smoke);margin-bottom:.35rem;}
+.prog-labels span{color:var(--gold);font-weight:600;}
+.prog-bar{height:3px;background:var(--border);}
+.prog-fill{height:100%;background:var(--gold);transition:width .4s ease;width:0%;}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.75rem;}
+.stat-card{background:var(--card);border:1px solid var(--border);padding:1.1rem;text-align:center;}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold);line-height:1;}
+.stat-label{font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--smoke);margin-top:.2rem;}
+.tier-label{
+  font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);
+  margin:2rem 0 .7rem;display:flex;align-items:center;gap:.75rem;
+}
+.tier-label.gold{color:var(--gold);}
+.tier-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.cl-item{
+  background:var(--card);border:1px solid var(--border);
+  margin-bottom:.45rem;transition:all .2s;overflow:hidden;
+}
+.cl-item.done{border-color:rgba(201,168,76,0.4);background:rgba(201,168,76,0.04);}
+.item-head{display:flex;align-items:flex-start;gap:.9rem;padding:.9rem 1.1rem;cursor:pointer;}
+.item-num{font-family:'Bebas Neue',sans-serif;font-size:.8rem;letter-spacing:.08em;color:#444;min-width:22px;padding-top:2px;}
+.cl-item.done .item-num{color:var(--gold);}
+.item-chk{
+  width:20px;height:20px;border:1px solid #444;background:transparent;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;
+  cursor:pointer;transition:all .2s;
+}
+.cl-item.done .item-chk{background:var(--gold);border-color:var(--gold);}
+.chk-mark{color:var(--black);font-size:.7rem;font-weight:700;display:none;}
+.cl-item.done .chk-mark{display:block;}
+.item-body{flex:1;}
+.item-title{font-size:.88rem;font-weight:500;color:var(--white);margin-bottom:.15rem;}
+.cl-item.done .item-title{color:var(--gold-light);}
+.item-sub{font-size:.72rem;color:#555;}
+.item-desc{font-size:.78rem;color:var(--smoke);line-height:1.6;padding:.5rem 0 0;display:none;}
+.cl-item.open .item-desc{display:block;}
+.item-detail{
+  display:none;padding:0 1.1rem .9rem 3.3rem;
+  border-top:1px solid var(--border);
+}
+.cl-item.done .item-detail{display:block;}
+.det-row{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,0.04);}
+.det-row:last-child{border-bottom:none;}
+.det-key{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:600;min-width:88px;padding-top:2px;}
+.det-val{font-size:.8rem;color:var(--white);flex:1;}
+.det-val.empty{color:#444;font-style:italic;}
+.det-input{flex:1;background:var(--deep);border:1px solid var(--border);color:var(--white);padding:.38rem .7rem;font-family:'DM Sans',sans-serif;font-size:.78rem;outline:none;}
+.det-input:focus{border-color:var(--gold);}
+.save-btn{
+  background:var(--gold);color:var(--black);border:none;
+  padding:.38rem .9rem;font-size:.65rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;cursor:pointer;white-space:nowrap;flex-shrink:0;
+}
+.save-btn:hover{background:var(--gold-light);}
+.alert-empty{text-align:center;padding:4rem 1rem;color:#444;font-size:.85rem;}
+.alert-empty .icon{font-size:2.5rem;margin-bottom:.75rem;}
+.alert-card{
+  background:var(--card);border:1px solid var(--border);border-left:3px solid var(--gold);
+  padding:1rem 1.25rem;margin-bottom:.75rem;display:flex;gap:1rem;align-items:flex-start;
+}
+.unread-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:5px;box-shadow:0 0 6px var(--gold);}
+.alert-icon{font-size:1.2rem;}
+.alert-content{flex:1;}
+.alert-title{font-size:.85rem;font-weight:500;color:var(--white);margin-bottom:.15rem;}
+.alert-meta{font-size:.7rem;color:var(--smoke);}
+.alert-detail{font-size:.78rem;color:var(--gold-light);margin-top:.3rem;font-weight:500;}
+.alert-time{font-size:.6rem;color:#444;white-space:nowrap;padding-top:2px;}
+.credit-bridge{
+  background:linear-gradient(135deg,rgba(46,204,113,0.06),rgba(46,204,113,0.02));
+  border:1px solid rgba(46,204,113,0.25);padding:2rem;margin-top:2rem;text-align:center;
+}
+.cr-tag{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--green);margin-bottom:.75rem;}
+.cr-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;margin-bottom:.5rem;}
+.cr-desc{font-size:.82rem;color:var(--smoke);line-height:1.7;max-width:460px;margin:0 auto 1.25rem;}
+.cr-ref{display:inline-block;background:rgba(46,204,113,0.1);border:1px solid rgba(46,204,113,0.3);color:var(--green);padding:.45rem 1.25rem;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:1.25rem;}
+.btn-cr{
+  display:inline-block;padding:.8rem 2.25rem;background:transparent;border:1px solid var(--gold);
+  color:var(--gold);font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;
+  transition:all .25s;text-decoration:none;
+}
+.btn-cr:hover{background:var(--gold);color:var(--black);}
+.toast-wrap{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;display:flex;flex-direction:column;gap:.5rem;}
+.toast{
+  background:var(--card);border:1px solid var(--gold);border-left:3px solid var(--gold);
+  padding:.85rem 1.25rem;max-width:300px;box-shadow:0 8px 32px rgba(0,0,0,0.6);
+  animation:fadeUp .3s ease;
+}
+.toast-title{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.2rem;}
+.toast-body{font-size:.78rem;color:var(--smoke);line-height:1.5;}
+.toast-detail{font-size:.78rem;color:var(--white);margin-top:.2rem;font-weight:500;}
+footer{
+  position:relative;z-index:5;border-top:1px solid var(--border);
+  padding:2rem 3rem;display:flex;justify-content:space-between;
+  align-items:flex-start;flex-wrap:wrap;gap:1.5rem;
+}
+.footer-brand{font-family:'Cormorant Garamond',serif;font-size:.85rem;color:var(--smoke);}
+.footer-brand span{color:var(--gold);}
+.footer-legal{font-size:.68rem;color:rgba(153,153,153,0.5);max-width:400px;line-height:1.5;}
+@media(max-width:600px){footer{padding:1.5rem 1.25rem;flex-direction:column;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.gate-wrap{display:flex;min-height:100vh;align-items:center;justify-content:center;position:relative;z-index:5;}
+.gate-hero{max-width:640px;padding:3rem 2rem;text-align:center;}
+.gate-badge{
+  display:inline-block;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);border:1px solid var(--gold);padding:.35rem 1.2rem;margin-bottom:1.5rem;
+}
+.gate-check{
+  width:110px;height:110px;border-radius:50%;border:2px solid var(--gold);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#1a1a1a,#0d0d0d);
+  box-shadow:0 0 60px rgba(201,168,76,0.35);
+  margin:1.5rem auto;
+}
+.gate-check .mark{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold);line-height:1;}
+.gate-check .label{font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--smoke);margin-top:.2rem;}
+.gate-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4.5vw,3rem);font-weight:300;margin-bottom:.75rem;}
+.gate-title em{color:var(--gold);font-style:italic;}
+.gate-sub{font-size:.88rem;color:var(--smoke);line-height:1.7;margin-bottom:2rem;}
+.gate-error{
+  background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.3);color:var(--red);
+  padding:1.25rem 1.5rem;font-size:.82rem;line-height:1.6;margin-top:1rem;display:none;
+}
+.gate-hidden{display:none !important;}
+</style>
+</head>
+<body>
+<div class="toast-wrap" id="toastWrap"></div>
+<div class="gate-wrap" id="gateScreen">
+  <div class="gate-hero">
+    <div class="gate-badge">Client Portal — The Corporate Way</div>
+    <div class="gate-check">
+      <div class="mark">✓</div>
+      <div class="label">Active</div>
+    </div>
+    <h1 class="gate-title" id="gateTitle">Welcome Aboard.</h1>
+    <p class="gate-sub" id="gateSub">Loading your account…</p>
+    <div class="gate-error" id="gateError">
+      We couldn't find an account tied to this link. Please use the exact portal link that was emailed to you after enrollment, or contact us at 817-328-2860 if you need it resent.
+    </div>
+  </div>
+</div>
+<div id="portalBody" class="gate-hidden">
+<header>
+  <div class="header-brand">The <span>Corporate Way</span> &nbsp;·&nbsp; Essential Distribution</div>
+  <div class="hdr-right">
+    <button class="alert-bell" onclick="switchTab('alerts')" title="My Alerts">
+      🔔<span class="alert-dot" id="alertDot"></span>
+    </button>
+    <div class="phase-badge">Client Portal</div>
+  </div>
+</header>
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('checklist')">Business Essentials</button>
+  <button class="tab-btn" id="alertTab" onclick="switchTab('alerts')">My Alerts <span class="tab-badge" id="alertBadge" style="display:none">0</span></button>
+  <button class="tab-btn" onclick="switchTab('credit')">Credit Referral</button>
+</nav>
+<div class="page active" id="page-checklist">
+  <div class="hero">
+    <div class="designation-tag">Phase 2 — The Corporate Way</div>
+    <h1 class="hero-title">Business <em>Essentials</em> Checklist</h1>
+    <p class="hero-sub" id="clientGreet">Your 20-step startup footprint tracker. Each item marked complete notifies you instantly with the details recorded.</p>
+  </div>
+  <div class="section">
+    <div class="admin-bar">
+      <label onclick="toggleAdmin()">
+        <div class="tog" id="togEl"><div class="tog-knob"></div></div>
+        Admin Mode — mark items complete &amp; log details
+      </label>
+      <div class="admin-active" id="adminBadge">Admin Active</div>
+    </div>
+    <div class="admin-bar" id="paymentConfirmBar" style="display:none;">
+      <label onclick="togglePaymentConfirmed()">
+        <div class="tog" id="payTogEl"><div class="tog-knob"></div></div>
+        Payment Received — confirm only after verifying in Square Dashboard
+      </label>
+      <div class="admin-active" id="payConfirmedBadge" style="border-color:var(--green);color:var(--green);">Payment Confirmed</div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-card"><div class="stat-num" id="sDone">0</div><div class="stat-label">Completed</div></div>
+      <div class="stat-card"><div class="stat-num" id="sPend">20</div><div class="stat-label">Remaining</div></div>
+      <div class="stat-card"><div class="stat-num" id="sPct">0%</div><div class="stat-label">Complete</div></div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-wrap">
+        <div class="prog-labels"><span>Progress</span><span id="progText">0 / 20</span></div>
+        <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+      </div>
+    </div>
+    <div class="tier-label">Paid Foundation</div>
+    <div id="checklistPaid"></div>
+    <div class="tier-label gold">Free Authority Layer</div>
+    <div id="checklistFree"></div>
+  </div>
+</div>
+<div class="page" id="page-alerts">
+  <div class="hero">
+    <div class="designation-tag">Client Notifications</div>
+    <h1 class="hero-title">My <em>Alerts</em></h1>
+    <p class="hero-sub">Every time a checklist step is completed, you receive the full details here — what was done and what was recorded.</p>
+  </div>
+  <div class="section">
+    <div id="alertsContainer">
+      <div class="alert-empty" id="alertEmpty">
+        <div class="icon">🔔</div>
+        No alerts yet. When your team marks a step complete, the details will appear here automatically.
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page" id="page-credit">
+  <div class="hero">
+    <div class="designation-tag">Phase 3 — Credit &amp; Funding</div>
+    <h1 class="hero-title">Strengthen Your <em>Credit Profile</em></h1>
+    <p class="hero-sub">Your business structure is only as strong as the credit behind it. This connects you with credit restoration services and your free consultation.</p>
+  </div>
+  <div class="section">
+    <div class="credit-bridge">
+      <div class="cr-tag">Add-On — Credit Relief Counselors</div>
+      <div class="cr-title">Build the Financial Foundation Your Business Deserves</div>
+      <div class="cr-desc">Personal and business credit repair through our certified partner. Start cleaning your profile now so banks, vendors, and funding platforms see a business built to last.</div>
+      <div class="cr-ref" id="crRefTag">Free Consultation Included</div><br/>
+      <a href="https://creditrc.com" target="_blank" rel="noopener" class="btn-cr" id="crRequestLink" onclick="markCrContacted()">Request Credit Relief Intake →</a>
+      <div id="crContactStatus" style="margin-top:1rem;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:#555;">Not yet contacted</div>
+    </div>
+    <div style="margin-top:2rem;background:var(--card);border:1px solid var(--border);padding:2rem;">
+      <div style="font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;">Your Phase 3 Checklist</div>
+      <div style="display:flex;flex-direction:column;gap:.6rem;">
+        <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;font-size:.85rem;color:var(--smoke);padding:.6rem .9rem;border:1px solid var(--border);background:var(--deep);">
+          <input type="checkbox" style="accent-color:var(--gold);width:15px;height:15px;" onchange="crCheck(this,'Personal credit report pulled and reviewed')"/> Pull and review your personal credit report
+        </label>
+        <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;font-size:.85rem;color:var(--smoke);padding:.6rem .9rem;border:1px solid var(--border);background:var(--deep);">
+          <input type="checkbox" style="accent-color:var(--gold);width:15px;height:15px;" onchange="crCheck(this,'Enrolled in credit repair program')"/> Enroll in credit repair program with Credit Relief Counselors
+        </label>
+        <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;font-size:.85rem;color:var(--smoke);padding:.6rem .9rem;border:1px solid var(--border);background:var(--deep);">
+          <input type="checkbox" style="accent-color:var(--gold);width:15px;height:15px;" onchange="crCheck(this,'Business credit profile started — DUNS / Experian Biz')"/> Start your business credit profile (DUNS number, Experian Business)
+        </label>
+        <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;font-size:.85rem;color:var(--smoke);padding:.6rem .9rem;border:1px solid var(--border);background:var(--deep);">
+          <input type="checkbox" style="accent-color:var(--gold);width:15px;height:15px;" onchange="crCheck(this,'Net-30 vendor accounts opened for tradelines')"/> Open Net-30 vendor accounts for initial tradelines
+        </label>
+        <label style="display:flex;align-items:center;gap:.75rem;cursor:pointer;font-size:.85rem;color:var(--smoke);padding:.6rem .9rem;border:1px solid var(--border);background:var(--deep);">
+          <input type="checkbox" style="accent-color:var(--gold);width:15px;height:15px;" onchange="crCheck(this,'Free consultation booked')"/> Book your free consultation
+        </label>
+      </div>
+    </div>
+    <div style="margin-top:1.5rem;background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.2);padding:1.25rem 1.75rem;">
+      <div style="font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem;">Required Disclosure</div>
+      <p style="font-size:.72rem;color:var(--smoke);line-height:1.7;">Our credit-repair partner provides the credit-relief service. Essential Distribution operates the authorized marketing-partner portal. No particular deletion, score increase, approval, funding outcome, or completion timeline is guaranteed. Essential Registered Agent &amp; Business Administration Services provides registered-agent and administrative business-support services. We do not provide legal, tax, accounting, or financial advice.</p>
+    </div>
+  </div>
+</div>
+<footer>
+  <div class="footer-brand">The <span>Corporate Way</span><br/><span style="font-size:.7rem;color:rgba(153,153,153,0.4)">Powered by Essential Distribution</span></div>
+  <div class="footer-legal">Essential Registered Agent &amp; Business Administration Services. We do not provide legal, tax, accounting, or financial advice. Clients should consult qualified professionals.</div>
+</footer>
+</div>
+<script>
+const REFERRAL_PARTNER_NAME = 'Credit RC';
+const REFERRAL_PARTNER_URL  = 'https://creditrc.com';
+document.getElementById('crRequestLink').href = REFERRAL_PARTNER_URL;
+const ZAPIER_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/27967898/445ibv8/';
+function sendToZapier(payload) {
+  fetch(ZAPIER_WEBHOOK_URL, {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  }).catch(err => console.error('Zapier webhook failed:', err));
+}
+const PAID = [
+  {n:1,title:'Form the Legal Business Entity',sub:'Register LLC or corporation with your state',desc:'Register the LLC or corporation with your state. This is the core foundation. It usually has a filing fee.',fields:[{k:'Entity Type',p:'LLC / Corporation'},{k:'State Filed',p:'e.g. Texas'},{k:'File Date',p:'MM/DD/YYYY'},{k:'File Number',p:'State file number'}]},
+  {n:2,title:'Reserve or Buy Your Business Name',sub:'Secure the name before you build around it',desc:'Make sure the name is available and secure it before you build around it.',fields:[{k:'Business Name',p:'Full legal name reserved'},{k:'State / Platform',p:'e.g. Texas SOS'},{k:'Reserved On',p:'MM/DD/YYYY'}]},
+  {n:3,title:'Buy Your Domain Name',sub:'Get a clean domain that matches your business name',desc:'Get a clean domain that matches your business name. One of the easiest credibility moves you can make.',fields:[{k:'Domain Name',p:'e.g. yourbusiness.com'},{k:'Registrar',p:'e.g. GoDaddy'},{k:'Expires',p:'Expiration date'},{k:'Hosting',p:'Hosting provider'}]},
+  {n:4,title:'Set Up a Real Business Address',sub:'Stable address for registration, banking, and mail',desc:'Use a lawful, stable address for registration, banking, mail, and customer trust.',fields:[{k:'Address',p:'Full street address'},{k:'Type',p:'Physical / Virtual / Registered Agent'},{k:'Provider',p:'If using a service'}]},
+  {n:5,title:'Get a Dedicated Business Phone Number',sub:'Separate business from personal',desc:'Separate business calls from personal calls. Customers, banks, and listing platforms expect this.',fields:[{k:'Business Phone',p:'(000) 000-0000'},{k:'Provider',p:'e.g. Google Voice, RingCentral'},{k:'Line Type',p:'VoIP / Landline / Mobile'}]},
+  {n:6,title:'Create a Professional Email',sub:'Domain-based email, not personal accounts',desc:'Use an address tied to your domain. Using your company email makes management easier.',fields:[{k:'Business Email',p:'name@yourdomain.com'},{k:'Provider',p:'e.g. Google Workspace'}]},
+  {n:7,title:'Obtain Required Licenses and Permits',sub:'City, county, state, and industry compliance',desc:'Depending on your city, county, state, and industry, this can be mandatory and may cost money.',fields:[{k:'License Type',p:'Type of license / permit'},{k:'Issuing Authority',p:'City / County / State'},{k:'Expiration',p:'Renewal date'},{k:'Cost',p:'Fee paid'}]},
+  {n:8,title:'Open a Business Bank Account',sub:'Keep business money separate from personal',desc:'Keep business money separate from personal money. Critical for credibility, bookkeeping, and liability separation.',fields:[{k:'Bank',p:'Bank name'},{k:'Account Type',p:'Checking / Savings'},{k:'Opened',p:'MM/DD/YYYY'},{k:'Account #',p:'Last 4 digits only'}]},
+  {n:9,title:'Get Business Insurance',sub:'At minimum, price general liability',desc:'At minimum, price general liability. If you have property, vehicles, staff, or customers onsite, this is more important.',fields:[{k:'Policy Type',p:'General Liability / Professional'},{k:'Provider',p:'Insurance company'},{k:'Coverage',p:'Coverage amount'},{k:'Renewal',p:'Policy renewal date'}]},
+  {n:10,title:'Set Up Bookkeeping',sub:'Accounting software or ledger from day one',desc:'Use accounting software or a basic ledger from day one. The IRS says your recordkeeping system must clearly show income and expenses.',fields:[{k:'Software',p:'e.g. QuickBooks, Wave'},{k:'Start Date',p:'When records begin'},{k:'Bookkeeper',p:'Name or Self-managed'}]},
+  {n:11,title:'Create Basic Branded Documents',sub:'Logo, invoices, estimates, payment instructions, terms',desc:'Have a logo, invoice template, estimate template, payment instructions, and simple service terms ready.',fields:[{k:'Logo Status',p:'Designed / In Progress'},{k:'Invoice Template',p:'Ready / Platform used'},{k:'Service Terms',p:'Ready / In Progress'}]},
+  {n:12,title:'Build a Simple Website',sub:'Even one strong page is enough to start',desc:'Even one strong page is enough: who you are, what you do, where you are, how to contact you, how to pay you.',fields:[{k:'Website URL',p:'https://yourdomain.com'},{k:'Platform',p:'e.g. GoDaddy, WordPress'},{k:'Launch Date',p:'MM/DD/YYYY'},{k:'Status',p:'Live / In Progress'}]},
+  {n:13,title:'Apply for Trademarks (If Brand Matters)',sub:'Protect the footprint you are building',desc:'This costs money, but if the name is central to your growth, it can protect the footprint you are building.',fields:[{k:'Trademark Name',p:'Name or mark filed'},{k:'Filing Date',p:'MM/DD/YYYY'},{k:'Serial Number',p:'USPTO serial number'},{k:'Status',p:'Pending / Registered'}]},
+];
+const FREE = [
+  {n:14,title:'Get an EIN from the IRS',sub:'Free — directly from IRS online in minutes',desc:'This is free. The IRS states you can get an EIN directly from the IRS online in minutes.',fields:[{k:'EIN',p:'XX-XXXXXXX'},{k:'Obtained',p:'MM/DD/YYYY'},{k:'Method',p:'Online / Fax / Mail'}]},
+  {n:15,title:'Use the EIN Consistently',sub:'Tax, payroll, banking, and vendor paperwork',desc:'Put the EIN on tax, payroll, banking, and vendor paperwork where appropriate so business identity stays uniform.',fields:[{k:'Applied To',p:'Tax, payroll, banking, vendors'},{k:'Bank Notified',p:'Yes / No'},{k:'Notes',p:'Any usage notes'}]},
+  {n:16,title:'Create a Google Business Profile',sub:'Free and powerful for local credibility',desc:'This is free and powerful for local credibility. Eligible businesses can create and verify a profile for Search and Maps.',fields:[{k:'Profile URL',p:'maps.google.com/...'},{k:'Category',p:'Business category'},{k:'Verified',p:'Yes / Pending'},{k:'Live Date',p:'MM/DD/YYYY'}]},
+  {n:17,title:'Verify Google Listing Eligibility',sub:'Confirm in-person hours to avoid suspension',desc:'Google requires eligible businesses to make in-person contact during stated hours. Do this correctly so you do not get suspended.',fields:[{k:'Business Hours',p:'Mon-Fri 9am-5pm'},{k:'In-Person Contact',p:'Yes / By Appointment'},{k:'Verified',p:'Yes / No'}]},
+  {n:18,title:'Create Core Social Profiles',sub:'Instagram, Facebook, LinkedIn — consistent name everywhere',desc:'Set up at least Instagram, Facebook, and LinkedIn. Keep the same business name, phone, email, logo, and address everywhere.',fields:[{k:'Instagram',p:'@handle'},{k:'Facebook',p:'Page URL'},{k:'LinkedIn',p:'Company page URL'},{k:'Other',p:'TikTok, Twitter, etc.'}]},
+  {n:19,title:'List the Business Consistently Everywhere',sub:'Name, address, phone, website, hours — exact match',desc:'Your name, address, phone, website, and hours should match exactly across your website, Google profile, invoices, and socials.',fields:[{k:'Legal Name Used',p:'Exact name used everywhere'},{k:'NAP Consistent',p:'Yes / Needs Update'},{k:'Platforms Checked',p:'Google, Yelp, BBB, Bing…'}]},
+  {n:20,title:'Start a Record Trail Immediately',sub:'Contracts, receipts, payments, tax records',desc:'Save contracts, receipts, invoices, payments, tax records, and customer communications from day one.',fields:[{k:'Storage Location',p:'Google Drive / Dropbox'},{k:'Earliest Record',p:'Date of first record'},{k:'System',p:'Software or folder structure'}]},
+];
+const ICONS = {1:'🏛️',2:'📋',3:'🌐',4:'📍',5:'📞',6:'📧',7:'📄',8:'🏦',9:'🛡️',10:'📊',11:'🎨',12:'💻',13:'™️',14:'🔢',15:'✅',16:'📍',17:'✔️',18:'📱',19:'📌',20:'🗂️'};
+const S = { admin:false, done:{}, details:{}, alerts:[], expanded:{}, portalId:null, clientName:'', crContacted:false, paymentConfirmed:false };
+function getUrlParam(name) {
+  const params = new URLSearchParams(window.location.search);
+  return params.get(name);
+}
+function revealPortal(name) {
+  document.getElementById('gateTitle').textContent = 'Welcome Aboard, ' + (name ? name.split(' ')[0] : 'there') + '.';
+  document.getElementById('gateSub').textContent = 'Your account is active. Redirecting you to your dashboard…';
+  setTimeout(() => {
+    document.getElementById('gateScreen').classList.add('gate-hidden');
+    document.getElementById('portalBody').classList.remove('gate-hidden');
+    if (name) {
+      document.getElementById('clientGreet').textContent = 'Welcome back, ' + name.split(' ')[0] + '. Your 20-step startup footprint tracker — each item marked complete notifies you instantly.';
+    }
+  }, 900);
+}
+function showGateError() {
+  document.getElementById('gateTitle').textContent = 'Link Not Recognized';
+  document.getElementById('gateSub').textContent = '';
+  document.getElementById('gateError').style.display = 'block';
+}
+window.addEventListener('DOMContentLoaded', () => {
+  renderChecklist('checklistPaid', PAID);
+  renderChecklist('checklistFree', FREE);
+  // FIX: Square's checkout links can't carry our dynamic portal_id back as a query
+  // param (they're static links, created manually — see Square Dashboard notes).
+  // So if there's no ?id= in the URL (e.g. returning from a Square redirect in the
+  // same browser), fall back to the last portal ID/name this browser saved locally.
+  let portalId = getUrlParam('id');
+  let urlName = getUrlParam('name');
+  let cachedName = urlName || '';
+  let cachedFromStorage = false;
+  try {
+    const cl = JSON.parse(localStorage.getItem('tcw_client') || '{}');
+    if (!portalId && cl.portalId) {
+      portalId = cl.portalId;
+      cachedFromStorage = true;
+    }
+    if (cl.portalId === portalId && cl.name) cachedName = cl.name;
+  } catch(e) {}
+  if (!portalId) {
+    showGateError();
+    return;
+  }
+  S.portalId = portalId;
+  S.clientName = cachedName;
+  revealPortal(cachedName);
+  sendToZapier({
+    event: 'portal_login',
+    timestamp: new Date().toISOString(),
+    portal_id: portalId,
+    client_name: cachedName || null,
+    matched_via: cachedFromStorage ? 'local_browser_fallback' : 'url_param'
+  });
+});
+function renderChecklist(containerId, items) {
+  const c = document.getElementById(containerId);
+  c.innerHTML = items.map(item => `
+    <div class="cl-item" id="cl-${item.n}">
+      <div class="item-head" onclick="toggleExpand(${item.n})">
+        <div class="item-num">${String(item.n).padStart(2,'0')}</div>
+        <div class="item-chk" onclick="event.stopPropagation();markDone(${item.n})">
+          <span class="chk-mark">✓</span>
+        </div>
+        <div class="item-body">
+          <div class="item-title">${item.title}</div>
+          <div class="item-sub">${item.sub}</div>
+          <div class="item-desc">${item.desc}</div>
+        </div>
+      </div>
+      <div class="item-detail" id="det-${item.n}"></div>
+    </div>
+  `).join('');
+}
+function toggleExpand(n) {
+  const el = document.getElementById('cl-'+n);
+  S.expanded[n] = !S.expanded[n];
+  S.expanded[n] ? el.classList.add('open') : el.classList.remove('open');
+}
+function markDone(n) {
+  if(!S.admin) { toast('Admin Mode Required','Enable Admin Mode to mark items complete.'); return; }
+  if(S.done[n]) {
+    // FIX: unchecking an item now also removes it from "My Alerts" instead of
+    // leaving a stale "Complete" alert showing for a step that's no longer done.
+    S.done[n] = false;
+    document.getElementById('cl-'+n).classList.remove('done');
+    document.getElementById('det-'+n).innerHTML = '';
+    S.alerts = S.alerts.filter(a => a.n !== n);
+    renderAlerts();
+    updateAlertBadge();
+    updateProgress();
+    const allItems = [...PAID,...FREE];
+    const item = allItems.find(i=>i.n===n);
+    let client = {};
+    try { client = JSON.parse(localStorage.getItem('tcw_client')||'{}'); } catch(e){}
+    sendToZapier({
+      event: 'checklist_step_reverted',
+      timestamp: new Date().toISOString(),
+      client_name: client.name || null,
+      client_email: client.email || null,
+      step_number: n,
+      step_title: item ? item.title : null
+    });
+    return;
+  }
+  S.done[n] = true;
+  if(!S.details[n]) S.details[n] = {};
+  document.getElementById('cl-'+n).classList.add('done');
+  renderDetail(n);
+  updateProgress();
+}
+function renderDetail(n) {
+  const allItems = [...PAID,...FREE];
+  const item = allItems.find(i=>i.n===n);
+  const det = document.getElementById('det-'+n);
+  const saved = S.details[n]||{};
+  if(S.admin) {
+    det.innerHTML = item.fields.map(f=>`
+      <div class="det-row">
+        <div class="det-key">${f.k}</div>
+        <input class="det-input" placeholder="${f.p}" value="${saved[f.k]||''}"
+          oninput="S.details[${n}]['${f.k}']=this.value"/>
+      </div>
+    `).join('') + `<div style="padding:.6rem 0 0"><button class="save-btn" onclick="saveNotify(${n})">SAVE &amp; NOTIFY CLIENT →</button></div>`;
+  } else {
+    det.innerHTML = item.fields.map(f=>{
+      const v = saved[f.k]||'';
+      return `<div class="det-row"><div class="det-key">${f.k}</div><div class="det-val ${v?'':'empty'}">${v||'Not yet recorded'}</div></div>`;
+    }).join('');
+  }
+}
+function saveNotify(n) {
+  const allItems = [...PAID,...FREE];
+  const item = allItems.find(i=>i.n===n);
+  const det = S.details[n]||{};
+  const filled = Object.entries(det).filter(([k,v])=>v&&v.trim());
+  const firstDetail = filled.length ? `${filled[0][0]}: ${filled[0][1]}` : null;
+  const alert = {
+    n, icon:ICONS[n], title:item.title,
+    details:filled,
+    time: new Date().toLocaleDateString([],{month:'short',day:'numeric'}) + ' · ' + new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),
+    unread:true
+  };
+  // FIX: replace any existing alert for this step instead of stacking duplicates
+  // if it's re-completed after being unchecked.
+  S.alerts = S.alerts.filter(a => a.n !== n);
+  S.alerts.unshift(alert);
+  renderAlerts();
+  updateAlertBadge();
+  toast(ICONS[n]+' Step '+n+' Complete',item.title, firstDetail);
+  let client = {};
+  try { client = JSON.parse(localStorage.getItem('tcw_client')||'{}'); } catch(e){}
+  sendToZapier({
+    event: 'checklist_step_completed',
+    timestamp: new Date().toISOString(),
+    client_name: client.name || null,
+    client_email: client.email || null,
+    step_number: n,
+    step_title: item.title,
+    step_tier: n <= 13 ? 'Paid Foundation' : 'Free Authority Layer',
+    details: Object.fromEntries(filled)
+  });
+  setTimeout(()=>renderDetail(n),300);
+}
+function crCheck(el, label) {
+  if(el.checked) {
+    toast('Phase 3 ✓', label);
+    let client = {};
+    try { client = JSON.parse(localStorage.getItem('tcw_client')||'{}'); } catch(e){}
+    sendToZapier({
+      event: 'credit_referral_step_checked',
+      timestamp: new Date().toISOString(),
+      client_name: client.name || null,
+      client_email: client.email || null,
+      step_label: label,
+      referral_partner: REFERRAL_PARTNER_NAME
+    });
+  }
+}
+function markCrContacted() {
+  if (S.crContacted) return;
+  S.crContacted = true;
+  const badge = document.getElementById('crContactStatus');
+  const now = new Date();
+  const stamp = now.toLocaleDateString([],{month:'short',day:'numeric'}) + ' · ' + now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  badge.textContent = 'Contacted ' + stamp + ' (self-reported click — not a confirmed appointment)';
+  badge.style.color = 'var(--green)';
+  let client = {};
+  try { client = JSON.parse(localStorage.getItem('tcw_client')||'{}'); } catch(e){}
+  sendToZapier({
+    event: 'credit_referral_link_clicked',
+    timestamp: now.toISOString(),
+    portal_id: S.portalId,
+    client_name: client.name || S.clientName || null,
+    client_email: client.email || null,
+    referral_partner: REFERRAL_PARTNER_NAME
+  });
+}
+function renderAlerts() {
+  const c = document.getElementById('alertsContainer');
+  if(!S.alerts.length) {
+    c.innerHTML = `<div class="alert-empty" id="alertEmpty"><div class="icon">🔔</div>No alerts yet. When your team marks a step complete, the details will appear here automatically.</div>`;
+    return;
+  }
+  c.innerHTML = S.alerts.map(a=>`
+    <div class="alert-card">
+      ${a.unread?'<div class="unread-dot"></div>':'<div style="width:7px"></div>'}
+      <div class="alert-icon">${a.icon}</div>
+      <div class="alert-content">
+        <div class="alert-title">${a.title}</div>
+        <div class="alert-meta">Step ${a.n} of 20 — Marked Complete</div>
+        ${a.details.length ? `<div class="alert-detail">${a.details.map(([k,v])=>`<strong>${k}:</strong> ${v}`).join(' &nbsp;·&nbsp; ')}</div>` : ''}
+      </div>
+      <div class="alert-time">${a.time}</div>
+    </div>
+  `).join('');
+}
+function updateAlertBadge() {
+  const unread = S.alerts.filter(a=>a.unread).length;
+  const badge = document.getElementById('alertBadge');
+  const dot = document.getElementById('alertDot');
+  if(unread>0){badge.textContent=unread;badge.style.display='inline';dot.style.display='block';}
+  else{badge.style.display='none';dot.style.display='none';}
+}
+function switchTab(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const idx = {checklist:0,alerts:1,credit:2}[id];
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  if(id==='alerts'){
+    S.alerts.forEach(a=>a.unread=false);
+    document.getElementById('alertBadge').style.display='none';
+    document.getElementById('alertDot').style.display='none';
+    renderAlerts();
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleAdmin() {
+  S.admin = !S.admin;
+  const tog = document.getElementById('togEl');
+  const badge = document.getElementById('adminBadge');
+  S.admin ? tog.classList.add('on') : tog.classList.remove('on');
+  badge.style.display = S.admin ? 'block' : 'none';
+  document.getElementById('paymentConfirmBar').style.display = S.admin ? 'flex' : 'none';
+  for(let n=1;n<=20;n++) if(S.done[n]) renderDetail(n);
+}
+// FIX: table/CRM updates for payment should only fire when a human has actually
+// verified the charge in Square (Square link clicks alone don't prove payment
+// succeeded). This is the one control that should drive a "Paid" Zapier Path —
+// point that Path at the 'payment_confirmed' event below, not at
+// 'enrollment_completed' from the intake flow.
+function togglePaymentConfirmed() {
+  S.paymentConfirmed = !S.paymentConfirmed;
+  const tog = document.getElementById('payTogEl');
+  const badge = document.getElementById('payConfirmedBadge');
+  S.paymentConfirmed ? tog.classList.add('on') : tog.classList.remove('on');
+  badge.style.display = S.paymentConfirmed ? 'block' : 'none';
+  let client = {};
+  try { client = JSON.parse(localStorage.getItem('tcw_client')||'{}'); } catch(e){}
+  toast(S.paymentConfirmed ? 'Payment Confirmed ✓' : 'Payment Confirmation Removed',
+        S.paymentConfirmed ? 'Marked as paid after Square verification.' : 'Reverted — this client is no longer marked as paid.');
+  sendToZapier({
+    event: S.paymentConfirmed ? 'payment_confirmed' : 'payment_confirmation_reverted',
+    timestamp: new Date().toISOString(),
+    portal_id: S.portalId,
+    client_name: client.name || S.clientName || null,
+    client_email: client.email || null,
+    confirmed_by: 'staff_admin_portal'
+  });
+}
+function updateProgress() {
+  const done = Object.values(S.done).filter(Boolean).length;
+  const pct = Math.round(done/20*100);
+  document.getElementById('sDone').textContent = done;
+  document.getElementById('sPend').textContent = 20-done;
+  document.getElementById('sPct').textContent = pct+'%';
+  document.getElementById('progText').textContent = done+' / 20';
+  document.getElementById('progFill').style.width = pct+'%';
+}
+function toast(title, body, detail) {
+  const w = document.getElementById('toastWrap');
+  const t = document.createElement('div'); t.className='toast';
+  t.innerHTML=`<div class="toast-title">${title}</div><div class="toast-body">${body}</div>${detail?`<div class="toast-detail">${detail}</div>`:''}`;
+  w.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300);},4500);
+}
+</script>
+</body>
+</html>
