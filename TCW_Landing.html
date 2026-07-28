@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Corporate Way — Business Essentials, Done Right</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --black:#0a0a0a; --deep:#111111; --card:#161616; --border:#2a2a2a;
+  --gold:#C9A84C; --gold-light:#e8c96a; --gold-dim:rgba(201,168,76,0.15);
+  --white:#f5f0e8; --smoke:#999; --silver:#bbb;
+  --green:#2ecc71; --teal:#2dd4bf; --red:#e74c3c;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden;line-height:1.7;}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 80px,rgba(201,168,76,0.025) 80px,rgba(201,168,76,0.025) 81px),
+             repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(201,168,76,0.025) 80px,rgba(201,168,76,0.025) 81px);
+  pointer-events:none;z-index:0;
+}
+header{
+  position:sticky;top:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 3rem;height:64px;
+  border-bottom:1px solid var(--border);
+  background:rgba(10,10,10,0.97);backdrop-filter:blur(10px);
+}
+.header-brand{font-family:'Cormorant Garamond',serif;font-size:1rem;letter-spacing:.15em;text-transform:uppercase;color:var(--smoke);}
+.header-brand span{color:var(--gold);}
+.header-cta{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,0.4);padding:.5rem 1.1rem;text-decoration:none;transition:all .2s;}
+.header-cta:hover{background:var(--gold);color:var(--black);}
+@media(max-width:600px){header{padding:0 1.25rem;}}
+.hero{
+  text-align:center;padding:5rem 2rem 4rem;position:relative;z-index:5;
+  background:linear-gradient(180deg,rgba(201,168,76,0.07) 0%,transparent 100%);
+  border-bottom:1px solid var(--border);
+}
+.designation-tag{
+  display:inline-block;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);border:1px solid var(--gold);padding:.35rem 1.2rem;margin-bottom:1.75rem;
+}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,6vw,4rem);font-weight:300;line-height:1.1;margin-bottom:1rem;}
+.hero-title em{color:var(--gold);font-style:italic;}
+.hero-sub{font-size:1rem;color:var(--smoke);max-width:540px;margin:0 auto 2.25rem;line-height:1.75;}
+.btn-primary{
+  display:inline-block;background:var(--gold);color:var(--black);
+  font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:.1em;
+  padding:1rem 2.5rem;text-decoration:none;text-transform:uppercase;
+  transition:background .25s;position:relative;
+}
+.btn-primary:hover{background:var(--gold-light);}
+.hero-note{font-size:.7rem;color:#555;margin-top:1rem;letter-spacing:.05em;}
+.trust-bar{
+  display:flex;justify-content:center;gap:2.5rem;flex-wrap:wrap;
+  padding:1.75rem 2rem;border-bottom:1px solid var(--border);
+  font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--smoke);
+  position:relative;z-index:5;
+}
+.trust-bar span{color:var(--gold);margin-right:.4rem;}
+.section{max-width:1000px;margin:0 auto;padding:4.5rem 2rem;position:relative;z-index:5;}
+.section-label{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:.75rem;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:300;text-align:center;margin-bottom:.75rem;}
+.section-desc{font-size:.9rem;color:var(--smoke);text-align:center;max-width:560px;margin:0 auto 3rem;line-height:1.7;}
+.feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;}
+@media(max-width:900px){.feature-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:520px){.feature-grid{grid-template-columns:1fr;}}
+.feature-card{background:var(--card);border:1px solid var(--border);padding:1.75rem 1.5rem;text-align:center;}
+.feature-num{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold);line-height:1;margin-bottom:.6rem;}
+.feature-title{font-size:.88rem;font-weight:500;margin-bottom:.4rem;}
+.feature-desc{font-size:.78rem;color:var(--smoke);line-height:1.5;}
+.tiers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+@media(max-width:720px){.tiers-grid{grid-template-columns:1fr;}}
+.tier-card{background:var(--card);border:1px solid var(--border);padding:2rem 1.75rem;position:relative;}
+.tier-card.featured{border-color:rgba(201,168,76,0.5);}
+.tier-card.featured::before{
+  content:'MOST POPULAR';position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+  font-size:.52rem;letter-spacing:.25em;background:var(--gold);color:var(--black);
+  padding:.2rem .75rem;font-weight:700;
+}
+.tier-badge{font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem;}
+.tier-name{font-family:'Cormorant Garamond',serif;font-size:1.6rem;margin-bottom:.35rem;}
+.tier-tagline{font-size:.78rem;color:var(--smoke);margin-bottom:1.25rem;font-style:italic;}
+.tier-price .amount{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--gold);line-height:1;}
+.tier-price .period{font-size:.68rem;color:var(--smoke);letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.25rem;}
+.tier-cta{
+  display:block;text-align:center;margin-top:1.5rem;padding:.75rem;
+  border:1px solid var(--border);color:var(--white);text-decoration:none;
+  font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;transition:all .2s;
+}
+.tier-card.featured .tier-cta{border-color:var(--gold);color:var(--gold);}
+.tier-cta:hover{background:var(--gold);color:var(--black);border-color:var(--gold);}
+.referral-banner{
+  margin:0 auto;max-width:1000px;
+  background:rgba(46,204,113,0.06);border:1px solid rgba(46,204,113,0.25);
+  padding:1.5rem 2rem;display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;
+  position:relative;z-index:5;
+}
+.referral-banner h4{color:var(--green);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.25rem;}
+.referral-banner p{font-size:.85rem;color:var(--smoke);}
+.cta-final{text-align:center;padding:5rem 2rem;position:relative;z-index:5;border-top:1px solid var(--border);}
+.cta-final .section-title{margin-bottom:1.75rem;}
+footer{
+  position:relative;z-index:5;border-top:2px solid var(--gold);
+  padding:2rem 3rem;display:flex;justify-content:space-between;align-items:flex-start;
+  flex-wrap:wrap;gap:1.5rem;
+}
+.footer-brand{font-family:'Cormorant Garamond',serif;font-size:.85rem;color:var(--smoke);}
+.footer-brand span{color:var(--gold);}
+.footer-legal{font-size:.68rem;color:rgba(153,153,153,0.5);max-width:420px;line-height:1.6;}
+@media(max-width:600px){footer{padding:1.5rem 1.25rem;flex-direction:column;} .trust-bar{gap:1.25rem;}}
+a:focus-visible, button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-brand">The <span>Corporate Way</span> &nbsp;·&nbsp; Essential Distribution</div>
+  <a class="header-cta" href="TCW_Phase1_Intake.html">Start Assessment</a>
+</header>
+
+<div class="hero">
+  <div class="designation-tag">Essential Business Services</div>
+  <h1 class="hero-title">Business Essentials, <em>Done Right</em>.</h1>
+  <p class="hero-sub">Registered agent, formation, and compliance handled by people who actually answer the phone. Built for Texas founders who want it done once, done correctly.</p>
+  <a class="btn-primary" href="TCW_Phase1_Intake.html">Start Your Business Assessment &rarr;</a>
+  <div class="hero-note">Takes under 5 minutes &nbsp;·&nbsp; No obligation</div>
+</div>
+
+<div class="trust-bar">
+  <div><span>&#9679;</span>Texas Registered Agent</div>
+  <div><span>&#9679;</span>Eden Event Center HQ, Houston</div>
+  <div><span>&#9679;</span>(817) 328-2860</div>
+</div>
+
+<div class="section">
+  <div class="section-label">What You Get</div>
+  <div class="section-title">Everything a new business actually needs</div>
+  <p class="section-desc">No jargon, no upsell maze — just the essentials, organized into one clear system.</p>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-num">01</div>
+      <div class="feature-title">Registered Agent</div>
+      <div class="feature-desc">A real Texas address on file with the State — not a PO box.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-num">02</div>
+      <div class="feature-title">20-Step Essentials</div>
+      <div class="feature-desc">A guided checklist covering everything from EIN to banking-readiness.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-num">03</div>
+      <div class="feature-title">Document Vault</div>
+      <div class="feature-desc">Every filing, receipt, and record kept in one secure client portal.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-num">04</div>
+      <div class="feature-title">Credit Consultation</div>
+      <div class="feature-desc">A free session to start building real business credit — no cost, no obligation.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="padding-top:0;">
+  <div class="section-label">Service Tiers</div>
+  <div class="section-title">Pick the level that fits where you are</div>
+  <p class="section-desc">Every tier includes registered agent service. Upgrade any time as your business grows.</p>
+  <div class="tiers-grid">
+    <div class="tier-card">
+      <div class="tier-badge">Tier I</div>
+      <div class="tier-name">Footprint Starter</div>
+      <div class="tier-tagline">Get your foundation locked in</div>
+      <div class="tier-price"><span class="amount">$149</span><div class="period">/ year</div></div>
+      <a class="tier-cta" href="TCW_Phase1_Intake.html">Get Started</a>
+    </div>
+    <div class="tier-card featured">
+      <div class="tier-badge">Tier II — Best Value</div>
+      <div class="tier-name">Authority Operator</div>
+      <div class="tier-tagline">State filing + full administration</div>
+      <div class="tier-price"><span class="amount">$549</span><div class="period">/ year</div></div>
+      <a class="tier-cta" href="TCW_Phase1_Intake.html">Get Started</a>
+    </div>
+    <div class="tier-card">
+      <div class="tier-badge">Tier III</div>
+      <div class="tier-name">Scale &amp; Authority</div>
+      <div class="tier-tagline">Multi-entity, full compliance command</div>
+      <div class="tier-price"><span class="amount">$849</span><div class="period">/ year</div></div>
+      <a class="tier-cta" href="TCW_Phase1_Intake.html">Get Started</a>
+    </div>
+  </div>
+</div>
+
+<div class="referral-banner">
+  <div style="font-size:1.5rem;">&#128176;</div>
+  <div>
+    <h4>Free Credit Consultation Included</h4>
+    <p>Every client qualifies for a free consultation with Credit RC &mdash; no cost, no obligation.</p>
+  </div>
+</div>
+
+<div class="cta-final">
+  <div class="section-label">Ready When You Are</div>
+  <h2 class="section-title">Start with a 5-minute assessment</h2>
+  <a class="btn-primary" href="TCW_Phase1_Intake.html">Begin Business Assessment &rarr;</a>
+</div>
+
+<footer>
+  <div class="footer-brand">The <span>Corporate Way</span><br/><span style="font-size:.7rem;color:rgba(153,153,153,0.4)">Powered by Essential Distribution</span></div>
+  <div class="footer-legal">Essential Distribution LLC provides registered-agent and administrative business-support services. We do not provide legal, tax, accounting, or financial advice.</div>
+</footer>
+</body>
+</html>
