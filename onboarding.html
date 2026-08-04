@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+Add password gate to onboarding.html<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -216,6 +216,19 @@ animation:fadeUp .3s ease;
 </style>
 </head>
 <body>
+<div id="gateScreen" style="min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;z-index:10;">
+<div style="max-width:420px;padding:3rem 2rem;text-align:center;">
+<div style="display:inline-block;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);padding:.35rem 1.2rem;margin-bottom:1.5rem;">Enrollment Access</div>
+<h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:300;line-height:1.1;margin-bottom:.75rem;">Enter Your <em style="color:var(--gold);font-style:italic;">Access Code</em></h1>
+<p style="font-size:.85rem;color:var(--smoke);margin-bottom:2rem;">This step was provided by your Corporate Way representative.</p>
+<input type="password" id="gatePassword" placeholder="Access code" style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--white);padding:.85rem 1rem;font-family:'DM Sans',sans-serif;font-size:.95rem;outline:none;text-align:center;letter-spacing:.1em;margin-bottom:1rem;"/>
+<button onclick="checkGatePassword()" style="width:100%;padding:.9rem;background:var(--gold);color:var(--black);border:none;font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:.15em;cursor:pointer;">UNLOCK ENROLLMENT →</button>
+<div id="gateError" style="display:none;color:var(--red);font-size:.78rem;margin-top:1rem;">Incorrect code. Please try again or contact your representative.</div>
+<p style="font-size:.7rem;color:#555;margin-top:2rem;">Need help? Call 817-328-2860</p>
+</div>
+</div>
+<div id="gatedContent" style="display:none;">
+
 <div class="toast-wrap" id="toastWrap"></div>
 <header>
 <div class="header-brand">The <span>Corporate Way</span> &nbsp;·&nbsp; Essential Distribution</div>
@@ -734,6 +747,25 @@ setTimeout(()=>d.remove(),4000);
 const style = document.createElement('style');
 style.textContent = '@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}';
 document.head.appendChild(style);
+
+function checkGatePassword() {
+  const input = document.getElementById('gatePassword').value;
+  if (input === 'WayAhead2026') {
+    document.getElementById('gateScreen').style.display = 'none';
+    document.getElementById('gatedContent').style.display = 'block';
+    sessionStorage.setItem('tcw_gate_unlocked', 'true');
+  } else {
+    document.getElementById('gateError').style.display = 'block';
+  }
+}
+document.getElementById('gatePassword').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') checkGatePassword();
+});
+if (sessionStorage.getItem('tcw_gate_unlocked') === 'true') {
+  document.getElementById('gateScreen').style.display = 'none';
+  document.getElementById('gatedContent').style.display = 'block';
+}
 </script>
+</div>
 </body>
 </html>
