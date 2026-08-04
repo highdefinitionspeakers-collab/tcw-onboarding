@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Corporate Way — Start Your Business</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+--black:#0a0a0a; --deep:#111111; --card:#161616; --border:#2a2a2a;
+--gold:#C9A84C; --gold-light:#e8c96a; --gold-dim:rgba(201,168,76,0.15);
+--white:#f5f0e8; --smoke:#999; --silver:#bbb;
+--green:#2ecc71; --teal:#2dd4bf; --red:#e74c3c;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+body::before{
+content:'';position:fixed;inset:0;
+background:repeating-linear-gradient(0deg,transparent,transparent 80px,rgba(201,168,76,0.025) 80px,rgba(201,168,76,0.025) 81px),
+repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(201,168,76,0.025) 80px,rgba(201,168,76,0.025) 81px);
+pointer-events:none;z-index:0;
+}
+header{
+position:sticky;top:0;z-index:100;
+display:flex;justify-content:space-between;align-items:center;
+padding:0 3rem;height:64px;
+border-bottom:1px solid var(--border);
+background:rgba(10,10,10,0.97);backdrop-filter:blur(10px);
+}
+.header-brand{font-family:'Cormorant Garamond',serif;font-size:1rem;letter-spacing:.15em;text-transform:uppercase;color:var(--smoke);}
+.header-brand span{color:var(--gold);}
+.header-step{font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:.3rem .9rem;}
+@media(max-width:600px){header{padding:0 1.25rem;} .header-step{display:none;}}
+.progress-bar-wrap{position:sticky;top:64px;z-index:99;background:var(--deep);border-bottom:1px solid var(--border);}
+.progress-steps{display:flex;max-width:900px;margin:0 auto;}
+.progress-step{
+flex:1;padding:.65rem 1rem;text-align:center;
+font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--smoke);
+border-right:1px solid var(--border);cursor:pointer;transition:all .2s;
+position:relative;
+}
+.progress-step:last-child{border-right:none;}
+.progress-step.active{color:var(--gold);}
+.progress-step.done{color:var(--green);}
+.progress-step.active::after{
+content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gold);
+}
+.progress-step.done::after{
+content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--green);
+}
+.flow-page{display:none;position:relative;z-index:5;}
+.flow-page.active{display:block;}
+.hero{
+text-align:center;padding:4rem 2rem 3rem;
+background:linear-gradient(180deg,rgba(201,168,76,0.06) 0%,transparent 100%);
+border-bottom:1px solid var(--border);
+position:relative;overflow:hidden;
+}
+.hero::before{
+content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);
+width:600px;height:600px;border-radius:50%;
+background:radial-gradient(circle,rgba(201,168,76,0.1) 0%,transparent 70%);
+pointer-events:none;
+}
+.designation-tag{
+display:inline-block;font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;
+color:var(--gold);border:1px solid var(--gold);padding:.35rem 1.2rem;margin-bottom:1.5rem;
+}
+.hero-eyebrow{font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--smoke);margin-bottom:.5rem;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,5vw,4rem);font-weight:300;line-height:1.1;margin-bottom:.75rem;}
+.hero-title em{color:var(--gold);font-style:italic;}
+.hero-sub{font-size:.88rem;color:var(--smoke);max-width:480px;margin:0 auto;line-height:1.7;}
+.section{max-width:860px;margin:0 auto;padding:3rem 2rem;}
+.section-label{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:300;margin-bottom:.5rem;}
+.section-desc{font-size:.85rem;color:var(--smoke);line-height:1.7;margin-bottom:2rem;}
+.divider{border:none;border-top:1px solid var(--border);margin:2rem 0;}
+.form-group{margin-bottom:1.4rem;}
+.form-label{display:block;font-size:.65rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:.45rem;}
+.form-label .req{color:var(--teal);}
+.form-input,.form-textarea{
+width:100%;background:var(--card);border:1px solid var(--border);
+color:var(--white);padding:.85rem 1rem;
+font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;
+transition:border-color .2s;-webkit-appearance:none;border-radius:0;
+}
+.form-input:focus,.form-textarea:focus{border-color:var(--gold);}
+.form-input::placeholder,.form-textarea::placeholder{color:#555;}
+.form-textarea{min-height:90px;resize:vertical;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:560px){.form-row{grid-template-columns:1fr;}}
+.radio-group,.check-grid{display:flex;flex-direction:column;gap:.45rem;}
+.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;}
+@media(max-width:480px){.check-grid{grid-template-columns:1fr;}}
+.radio-item,.check-item{
+display:flex;align-items:center;gap:.7rem;cursor:pointer;
+font-size:.85rem;color:var(--smoke);
+padding:.55rem .9rem;border:1px solid var(--border);background:var(--card);
+transition:all .15s;
+}
+.radio-item:hover,.check-item:hover{border-color:rgba(201,168,76,0.4);color:var(--white);}
+.radio-item input,.check-item input{accent-color:var(--gold);width:15px;height:15px;flex-shrink:0;}
+.tiers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+@media(max-width:720px){.tiers-grid{grid-template-columns:1fr;}}
+.tier-card{
+background:var(--card);border:1px solid var(--border);
+padding:2rem 1.75rem;position:relative;cursor:pointer;
+transition:border-color .25s,box-shadow .25s;
+}
+.tier-card:hover{border-color:rgba(201,168,76,0.5);box-shadow:0 0 24px rgba(201,168,76,0.08);}
+.tier-card.selected{border-color:var(--gold);box-shadow:0 0 32px rgba(201,168,76,0.15);}
+.tier-card.featured{border-color:rgba(201,168,76,0.4);}
+.tier-card.featured::before{
+content:'MOST POPULAR';position:absolute;top:-1px;left:50%;transform:translateX(-50%);
+font-size:.52rem;letter-spacing:.25em;background:var(--gold);color:var(--black);
+padding:.2rem .75rem;font-weight:700;
+}
+.tier-badge{font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem;}
+.tier-name{font-family:'Cormorant Garamond',serif;font-size:1.7rem;margin-bottom:.35rem;}
+.tier-tagline{font-size:.78rem;color:var(--smoke);margin-bottom:1.5rem;font-style:italic;}
+.tier-price .amount{font-family:'Bebas Neue',sans-serif;font-size:3.2rem;color:var(--gold);line-height:1;}
+.tier-price .period{font-size:.7rem;color:var(--smoke);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.25rem;}
+.tier-price .original{font-size:.8rem;color:var(--smoke);text-decoration:line-through;}
+.tier-price .savings{font-size:.68rem;color:var(--green);letter-spacing:.08em;text-transform:uppercase;}
+.tier-features{list-style:none;margin:1.25rem 0 2rem;}
+.tier-features li{
+padding:.5rem 0;border-bottom:1px solid var(--border);
+font-size:.8rem;color:var(--smoke);display:flex;align-items:flex-start;gap:.6rem;line-height:1.4;
+}
+.tier-features li::before{content:'◆';color:var(--gold);font-size:.45rem;margin-top:.35rem;flex-shrink:0;}
+.tier-features li strong{color:var(--white);}
+.btn-tier{
+width:100%;padding:.85rem;background:transparent;border:1px solid var(--border);
+color:var(--white);font-family:'DM Sans',sans-serif;font-size:.75rem;letter-spacing:.15em;
+text-transform:uppercase;cursor:pointer;transition:all .25s;
+}
+.btn-tier:hover,.tier-card.selected .btn-tier{background:var(--gold);color:var(--black);border-color:var(--gold);font-weight:600;}
+.tier-card.featured .btn-tier{border-color:rgba(201,168,76,0.5);color:var(--gold);}
+.referral-banner{
+margin-top:2rem;background:rgba(46,204,113,0.06);
+border:1px solid rgba(46,204,113,0.25);padding:1.25rem 1.75rem;
+display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;
+}
+.referral-text h4{color:var(--green);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.2rem;}
+.referral-text p{font-size:.8rem;color:var(--smoke);}
+.referral-text p a{color:var(--green);font-weight:600;text-decoration:underline;}
+.referral-cta{
+margin-left:auto;background:var(--green);color:#06180d;
+font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.08em;
+padding:.6rem 1.4rem;text-decoration:none;white-space:nowrap;
+transition:background .2s;
+}
+.referral-cta:hover{background:#4ade80;}
+.payment-section{display:none;margin-top:2.5rem;}
+.payment-section.visible{display:block;}
+.pay-options{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+@media(max-width:480px){.pay-options{grid-template-columns:1fr;}}
+.pay-option{
+background:var(--card);border:1px solid var(--border);padding:1.25rem 1.5rem;
+cursor:pointer;transition:all .2s;
+}
+.pay-option:hover,.pay-option.selected{border-color:var(--gold);}
+.pay-option.selected{background:rgba(201,168,76,0.05);}
+.pay-option-label{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.35rem;}
+.pay-option-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:.2rem;}
+.pay-option-detail{font-size:.75rem;color:var(--smoke);line-height:1.5;}
+.pay-option-price{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--gold);margin-top:.5rem;}
+.summary-box{
+background:var(--card);border:1px solid var(--border);
+padding:2rem 2.25rem;margin-top:1.5rem;display:none;
+}
+.summary-box.visible{display:block;}
+.summary-row{
+display:flex;justify-content:space-between;align-items:center;
+padding:.65rem 0;border-bottom:1px solid var(--border);font-size:.85rem;flex-wrap:wrap;gap:.4rem;
+}
+.summary-row:last-of-type{border-bottom:none;}
+.summary-row .lbl{color:var(--smoke);}
+.summary-row .val{color:var(--white);}
+.summary-row.total-row{font-family:'Cormorant Garamond',serif;font-size:1.4rem;padding-top:1rem;}
+.summary-row.total-row .val{color:var(--gold);}
+.btn-enroll{
+width:100%;margin-top:1.75rem;padding:1.1rem;
+background:var(--gold);color:var(--black);border:none;
+font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:.15em;
+cursor:pointer;transition:background .25s;position:relative;overflow:hidden;
+}
+.btn-enroll::before{
+content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);
+transition:left .5s;
+}
+.btn-enroll:hover::before{left:100%;}
+.btn-enroll:hover{background:var(--gold-light);}
+.secure-note{text-align:center;font-size:.68rem;color:#555;margin-top:.75rem;}
+footer{
+position:relative;z-index:5;border-top:1px solid var(--border);
+padding:2rem 3rem;display:flex;justify-content:space-between;
+align-items:flex-start;flex-wrap:wrap;gap:1.5rem;
+}
+.footer-brand{font-family:'Cormorant Garamond',serif;font-size:.85rem;color:var(--smoke);}
+.footer-brand span{color:var(--gold);}
+.footer-legal{font-size:.68rem;color:rgba(153,153,153,0.5);max-width:400px;line-height:1.5;}
+@media(max-width:600px){footer{padding:1.5rem 1.25rem;flex-direction:column;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{animation:fadeUp .5s ease both;}
+.toast-wrap{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;display:flex;flex-direction:column;gap:.5rem;}
+.toast{
+background:var(--card);border:1px solid var(--gold);border-left:3px solid var(--gold);
+padding:.85rem 1.25rem;max-width:300px;box-shadow:0 8px 32px rgba(0,0,0,0.5);
+animation:fadeUp .3s ease;
+}
+.toast-title{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.2rem;}
+.toast-body{font-size:.78rem;color:var(--smoke);line-height:1.5;}
+</style>
+</head>
+<body>
+<div class="toast-wrap" id="toastWrap"></div>
+<header>
+<div class="header-brand">The <span>Corporate Way</span> &nbsp;·&nbsp; Essential Distribution</div>
+<div class="header-step">Phase 1 — Enrollment</div>
+</header>
+<div class="progress-bar-wrap">
+<div class="progress-steps">
+<div class="progress-step active" id="ps1" onclick="goStep(1)">01 · Assessment</div>
+<div class="progress-step" id="ps2" onclick="goStep(2)">02 · Select Tier</div>
+<div class="progress-step" id="ps3" onclick="goStep(3)">03 · Payment</div>
+<div class="progress-step" id="ps4" onclick="goStep(4)">04 · Confirm</div>
+</div>
+</div>
+<div class="flow-page active" id="step1">
+<div class="hero">
+<div class="designation-tag">Essential Business Services — New Client Assessment</div>
+<div class="hero-eyebrow">Step 1 of 4</div>
+<h1 class="hero-title">Business <em>Readiness</em> Assessment</h1>
+<p class="hero-sub">Help us understand where you are so we can put you where you need to be. This takes under 5 minutes.</p>
+</div>
+<div class="section">
+<div class="section-label">Contact Information</div>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label">Full Name <span class="req">*</span></label>
+<input type="text" class="form-input" id="f_name" placeholder="Your full legal name"/>
+</div>
+<div class="form-group">
+<label class="form-label">Phone Number <span class="req">*</span></label>
+<input type="tel" class="form-input" id="f_phone" placeholder="(000) 000-0000"/>
+<div style="font-size:.65rem;color:#777;margin-top:.4rem;line-height:1.4;">By providing your number, you agree to receive SMS/text updates from The Corporate Way about your enrollment and account status. Msg &amp; data rates may apply. Reply STOP to opt out.</div>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Email Address <span class="req">*</span></label>
+<input type="email" class="form-input" id="f_email" placeholder="your@email.com"/>
+</div>
+<hr class="divider"/>
+<div class="section-label">Business Information</div>
+<div class="form-group">
+<label class="form-label">Business Name or Desired Name <span class="req">*</span></label>
+<input type="text" class="form-input" id="f_bizname" placeholder="Enter your business name"/>
+</div>
+<div class="form-group">
+<label class="form-label">Type of Business <span class="req">*</span></label>
+<textarea class="form-textarea" id="f_biztype" placeholder="Describe your business, industry, products or services…"></textarea>
+</div>
+<div class="form-group">
+<label class="form-label">Have you already formed your LLC or corporation? <span class="req">*</span></label>
+<div class="radio-group">
+<label class="radio-item"><input type="radio" name="formed" value="Yes"/> Yes — already formed</label>
+<label class="radio-item"><input type="radio" name="formed" value="No"/> No — not yet</label>
+<label class="radio-item"><input type="radio" name="formed" value="Not Sure"/> Not sure</label>
+</div>
+</div>
+<hr class="divider"/>
+<div class="section-label">Services Needed</div>
+<div class="form-group">
+<label class="form-label">Which services are you interested in?</label>
+<div class="check-grid">
+<label class="check-item"><input type="checkbox" value="LLC Formation"/> LLC Formation</label>
+<label class="check-item"><input type="checkbox" value="Registered Agent"/> Registered Agent</label>
+<label class="check-item"><input type="checkbox" value="EIN Registration"/> EIN Registration</label>
+<label class="check-item"><input type="checkbox" value="Business Address"/> Business Address</label>
+<label class="check-item"><input type="checkbox" value="Business Credit"/> Business Credit Building</label>
+<label class="check-item"><input type="checkbox" value="Funding Prep"/> Funding Preparation</label>
+<label class="check-item"><input type="checkbox" value="Website Dev"/> Website Development</label>
+<label class="check-item"><input type="checkbox" value="Consulting"/> Business Consulting</label>
+</div>
+</div>
+<hr class="divider"/>
+<div class="section-label">Current Status</div>
+<div class="form-row">
+<div class="form-group">
+<label class="form-label">Do you have an EIN?</label>
+<div class="radio-group">
+<label class="radio-item"><input type="radio" name="ein" value="Yes"/> Yes</label>
+<label class="radio-item"><input type="radio" name="ein" value="No"/> No</label>
+<label class="radio-item"><input type="radio" name="ein" value="Not Sure"/> Not Sure</label>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Business bank account?</label>
+<div class="radio-group">
+<label class="radio-item"><input type="radio" name="bank" value="Yes"/> Yes</label>
+<label class="radio-item"><input type="radio" name="bank" value="No"/> No</label>
+</div>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">Currently generating revenue?</label>
+<div class="radio-group" style="flex-direction:row;gap:.5rem;">
+<label class="radio-item"><input type="radio" name="revenue" value="Yes"/> Yes</label>
+<label class="radio-item"><input type="radio" name="revenue" value="No"/> No</label>
+</div>
+</div>
+<hr class="divider"/>
+<div class="section-label">Goals</div>
+<div class="form-group">
+<label class="form-label">Your biggest challenge right now? <span class="req">*</span></label>
+<textarea class="form-textarea" id="f_challenge" placeholder="Be specific — this helps us prioritize…"></textarea>
+</div>
+<div class="form-group">
+<label class="form-label">What do you want to accomplish in 90 days? <span class="req">*</span></label>
+<textarea class="form-textarea" id="f_goals" placeholder="Revenue goals, structure, launches, milestones…"></textarea>
+</div>
+<div class="form-group">
+<label class="form-label">Best time to reach you?</label>
+<div class="radio-group" style="flex-direction:row;flex-wrap:wrap;gap:.5rem;">
+<label class="radio-item"><input type="radio" name="contact_time" value="Morning"/> Morning</label>
+<label class="radio-item"><input type="radio" name="contact_time" value="Afternoon"/> Afternoon</label>
+<label class="radio-item"><input type="radio" name="contact_time" value="Evening"/> Evening</label>
+</div>
+</div>
+<div class="form-group">
+<label class="form-label">How did you hear about us?</label>
+<input type="text" class="form-input" id="f_source" placeholder="Referral, social media, event…"/>
+</div>
+<button class="btn-enroll" onclick="submitAssessment()">CONTINUE TO SERVICE SELECTION →</button>
+</div>
+</div>
+<div class="flow-page" id="step2">
+<div class="hero">
+<div class="designation-tag">Step 2 of 4 — Service Tier</div>
+<div class="hero-eyebrow">Welcome, <span id="clientNameDisplay" style="color:var(--gold)"></span></div>
+<h1 class="hero-title">Select Your <em>Service Level</em></h1>
+<p class="hero-sub">All tiers include registered agent service.</p>
+</div>
+<div class="section">
+<div class="tiers-grid">
+<div class="tier-card" onclick="selectTier(this,'Footprint Starter',149)">
+<div class="tier-badge">Tier I</div>
+<div class="tier-name">Footprint Starter</div>
+<div class="tier-tagline">Get your foundation locked in</div>
+<div class="tier-price">
+<div class="amount">$149</div>
+<div class="period">/ year</div>
+</div>
+<ul class="tier-features">
+<li><strong>Texas Registered Agent Service</strong> — 1 year</li>
+<li>Registered address on file with State</li>
+<li>Document receipt &amp; forwarding</li>
+<li>Compliance calendar setup</li>
+<li>Welcome packet &amp; document vault</li>
+<li>Email support</li>
+</ul>
+<button class="btn-tier">Select This Tier</button>
+</div>
+<div class="tier-card featured" onclick="selectTier(this,'Authority Operator',549)">
+<div class="tier-badge">Tier II — Best Value</div>
+<div class="tier-name">Authority Operator</div>
+<div class="tier-tagline">State filing + full administration</div>
+<div class="tier-price">
+<div class="original">$798 separately</div>
+<div class="amount">$549</div>
+<div class="period">/ year</div>
+<div class="savings">Includes $249 State Registration</div>
+</div>
+<ul class="tier-features">
+<li><strong>Everything in Footprint Starter</strong></li>
+<li><strong>Texas LLC State Registration</strong> ($249 — included)</li>
+<li>EIN readiness checklist</li>
+<li>Banking-readiness folder</li>
+<li>20 Business Essentials checklist</li>
+<li>Branded email &amp; phone checklist</li>
+<li>Landing-page readiness review</li>
+<li>Priority document organization</li>
+</ul>
+<button class="btn-tier">Select This Tier</button>
+</div>
+<div class="tier-card" onclick="selectTier(this,'Scale & Authority',849)">
+<div class="tier-badge">Tier III</div>
+<div class="tier-name">Scale &amp; Authority</div>
+<div class="tier-tagline">Multi-entity, full compliance command</div>
+<div class="tier-price">
+<div class="amount">$849</div>
+<div class="period">/ year</div>
+</div>
+<ul class="tier-features">
+<li><strong>Everything in Authority Operator</strong></li>
+<li>Multi-entity dashboard (up to 3)</li>
+<li>Annual compliance review</li>
+<li>Assumed-name / DBA tracking</li>
+<li>Contract inventory</li>
+<li>Creative or publishing enterprise intake</li>
+<li>Quarterly check-in call</li>
+<li>Priority onboarding line</li>
+</ul>
+<button class="btn-tier">Select This Tier</button>
+</div>
+</div>
+<div class="referral-banner">
+<div style="font-size:1.5rem">💳</div>
+<div class="referral-text">
+<h4>Free Credit Consultation Included</h4>
+<p>Every client qualifies for a free consultation with <a href="https://creditrc.com" target="_blank" rel="noopener" id="referralLink">Credit RC</a> — no cost, no obligation.</p>
+</div>
+<a href="https://creditrc.com" target="_blank" rel="noopener" class="referral-cta" id="referralCta">Book Free Call →</a>
+</div>
+<button class="btn-enroll" id="btnToPayment" style="margin-top:2rem;display:none" onclick="goStep(3)">CONTINUE TO PAYMENT →</button>
+</div>
+</div>
+<div class="flow-page" id="step3">
+<div class="hero">
+<div class="designation-tag">Step 3 of 4 — Payment</div>
+<h1 class="hero-title">Choose Your <em>Payment Plan</em></h1>
+<p class="hero-sub">Select how you'd like to pay.</p>
+</div>
+<div class="section">
+<div class="section-label">Selected Tier</div>
+<div id="selectedTierSummary" style="background:var(--card);border:1px solid rgba(201,168,76,0.3);padding:1rem 1.5rem;margin-bottom:2rem;font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--gold);">—</div>
+<div class="section-label">Payment Options</div>
+<div class="pay-options" id="payOptions"></div>
+<div class="summary-box visible" id="paymentSummary">
+<div class="section-label" style="margin-bottom:1.25rem">Order Summary</div>
+<div class="summary-row">
+<span class="lbl">Client</span>
+<span class="val" id="sumClient">—</span>
+</div>
+<div class="summary-row">
+<span class="lbl">Service Tier</span>
+<span class="val" id="sumTier">—</span>
+</div>
+<div class="summary-row">
+<span class="lbl">Annual Investment</span>
+<span class="val" id="sumFull">—</span>
+</div>
+<div class="summary-row">
+<span class="lbl">Payment Plan</span>
+<span class="val" id="sumPlan">—</span>
+</div>
+<div class="summary-row total-row">
+<span class="lbl">Due Today</span>
+<span class="val" id="sumDue">—</span>
+</div>
+<button class="btn-enroll" onclick="completeEnrollment()">COMPLETE ENROLLMENT &amp; PAY →</button>
+<p class="secure-note">Secure checkout by Square · Receipt sent to your email on file · 817-328-2860</p>
+</div>
+</div>
+</div>
+<div class="flow-page" id="step4">
+<div class="hero" style="padding-bottom:4rem">
+<div class="designation-tag">Enrollment Submitted</div>
+<div style="display:flex;justify-content:center;margin:1.5rem 0;">
+<div style="width:110px;height:110px;border-radius:50%;border:2px solid var(--gold);
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+background:linear-gradient(135deg,#1a1a1a,#0d0d0d);
+box-shadow:0 0 60px rgba(201,168,76,0.35);">
+<div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--gold);line-height:1">✓</div>
+<div style="font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--smoke);margin-top:.2rem">Pending</div>
+</div>
+</div>
+<h1 class="hero-title" id="confirmName">Almost There.</h1>
+<p class="hero-sub" id="confirmSub">Finish your payment in the Square tab — your account activates once payment is confirmed.</p>
+</div>
+<div class="section">
+<div style="background:var(--card);border:1px solid rgba(201,168,76,0.35);padding:2rem 2.25rem;margin-bottom:2rem;">
+<div class="section-label" style="margin-bottom:1.25rem">Enrollment Summary</div>
+<div class="summary-row"><span class="lbl">Client</span><span class="val" id="conf_name">—</span></div>
+<div class="summary-row"><span class="lbl">Email</span><span class="val" id="conf_email">—</span></div>
+<div class="summary-row"><span class="lbl">Business</span><span class="val" id="conf_biz">—</span></div>
+<div class="summary-row"><span class="lbl">Service Tier</span><span class="val" id="conf_tier">—</span></div>
+<div class="summary-row"><span class="lbl">Payment Plan</span><span class="val" id="conf_plan">—</span></div>
+<div class="summary-row total-row"><span class="lbl">Total Due Today</span><span class="val" id="conf_due">—</span></div>
+</div>
+<div style="background:rgba(45,212,191,0.06);border:1px solid rgba(45,212,191,0.3);padding:1.5rem 2rem;margin-bottom:2rem;">
+<div style="font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--teal);margin-bottom:.5rem">Your Client Portal Link</div>
+<div style="font-size:.8rem;color:var(--smoke);margin-bottom:.75rem">Bookmark this link — it's also being emailed to you. Your Business Essentials checklist unlocks once our team confirms your payment.</div>
+<a id="conf_portal_link" href="#" style="font-size:.85rem;color:var(--teal);word-break:break-all;text-decoration:underline;">—</a>
+</div>
+<div class="section-label">What Happens Next</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2.5rem;">
+<div style="background:var(--card);border:1px solid var(--border);padding:1.75rem;">
+<div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--gold);line-height:1;margin-bottom:.5rem">01</div>
+<div style="font-size:.88rem;font-weight:500;margin-bottom:.35rem">Payment Confirmation</div>
+<div style="font-size:.78rem;color:var(--smoke);line-height:1.6">Our team verifies your Square payment and confirms your account — usually within one business day.</div>
+</div>
+<div style="background:var(--card);border:1px solid var(--border);padding:1.75rem;">
+<div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--gold);line-height:1;margin-bottom:.5rem">02</div>
+<div style="font-size:.88rem;font-weight:500;margin-bottom:.35rem">Registered Agent Filed</div>
+<div style="font-size:.78rem;color:var(--smoke);line-height:1.6">Your agent designation submitted to Texas SOS within 1 business day of confirmed payment.</div>
+</div>
+<div style="background:var(--card);border:1px solid var(--border);padding:1.75rem;">
+<div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--gold);line-height:1;margin-bottom:.5rem">03</div>
+<div style="font-size:.88rem;font-weight:500;margin-bottom:.35rem">Document Vault Ready</div>
+<div style="font-size:.78rem;color:var(--smoke);line-height:1.6">Secure folder created and shared within 2 business days.</div>
+</div>
+<div style="background:var(--card);border:1px solid var(--border);padding:1.75rem;">
+<div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--gold);line-height:1;margin-bottom:.5rem">04</div>
+<div style="font-size:.88rem;font-weight:500;margin-bottom:.35rem">Business Checklist Unlocked</div>
+<div style="font-size:.78rem;color:var(--smoke);line-height:1.6">Your 20-step Business Essentials tracker goes live once payment is confirmed — Phase 2 begins.</div>
+</div>
+</div>
+<div style="background:rgba(46,204,113,0.05);border:1px solid rgba(46,204,113,0.25);padding:1.5rem 2rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+<div style="font-size:1.5rem">✓</div>
+<div>
+<div style="font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--green);margin-bottom:.2rem">Free Credit Consultation Available</div>
+<div style="font-size:.8rem;color:var(--smoke)">Ask us about your free consultation with <a href="https://creditrc.com" target="_blank" rel="noopener" style="color:var(--green);font-weight:600;">Credit RC</a> — no cost, no obligation.</div>
+</div>
+</div>
+<a id="conf_portal_cta" href="portal.html" class="btn-enroll" style="display:block;text-align:center;text-decoration:none;line-height:3rem">
+GO TO YOUR CLIENT PORTAL →
+</a>
+<p class="secure-note" style="margin-top:.75rem">Business phone: 817-328-2860 &nbsp;·&nbsp; Powered by Essential Distribution</p>
+</div>
+</div>
+<footer>
+<div class="footer-brand">The <span>Corporate Way</span><br/><span style="font-size:.7rem;color:rgba(153,153,153,0.4)">Powered by Essential Distribution</span></div>
+<div class="footer-legal">Essential Registered Agent &amp; Business Administration Services provides registered-agent and administrative business-support services only. We do not provide legal, tax, accounting, or financial advice. By submitting your phone number, you consent to receive SMS/text messages from The Corporate Way regarding your enrollment and account status. Message frequency varies; message and data rates may apply. Reply STOP to opt out, HELP for help.</div>
+</footer>
+<script>
+const REFERRAL_PARTNER_NAME = 'Credit RC';
+const REFERRAL_PARTNER_URL = 'https://creditrc.com';
+const ZAPIER_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/27967898/445ibv8/';
+const SQUARE_CHECKOUT = {
+enabled: true,
+links: {
+'Footprint Starter': { full: 'https://square.link/u/HvSt9E9e', half: 'https://square.link/u/hosQK4ZA', third: 'https://square.link/u/BAd1IOmJ' },
+'Authority Operator': { full: 'https://square.link/u/joQxPtHE', half: 'https://square.link/u/cH2NUKQO', third: 'https://square.link/u/1Mc3epH4' },
+'Scale & Authority': { full: 'https://square.link/u/FA2zKFzx', half: 'https://square.link/u/qbueCm4o', third: 'https://square.link/u/ZYgcXYJ5' }
+}
+};
+document.querySelectorAll('#referralLink, #referralCta').forEach(el => {
+el.textContent = el.id === 'referralCta' ? 'Book Free Call →' : REFERRAL_PARTNER_NAME;
+el.href = REFERRAL_PARTNER_URL;
+});
+const state = {
+name:'', email:'', phone:'', bizname:'', biztype:'', challenge:'', goals:'', source:'',
+tierName:'', tierFull:0, payPlan:'', payPlanId:'', payDue:0, tierSelectedFired:false
+};
+function toast(title, body) {
+const w = document.getElementById('toastWrap');
+const t = document.createElement('div'); t.className = 'toast';
+t.innerHTML = `<div class="toast-title">${title}</div><div class="toast-body">${body}</div>`;
+w.appendChild(t);
+setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(()=>t.remove(),300); }, 4000);
+}
+function submitAssessment() {
+const name = document.getElementById('f_name').value.trim();
+const phone = document.getElementById('f_phone').value.trim();
+const email = document.getElementById('f_email').value.trim();
+const bizname = document.getElementById('f_bizname').value.trim();
+const challenge = document.getElementById('f_challenge').value.trim();
+const goals = document.getElementById('f_goals').value.trim();
+if(!name||!phone||!email||!bizname||!challenge||!goals) {
+toast('Required Fields', 'Please complete all required fields before continuing.');
+return;
+}
+state.name = name; state.email = email; state.phone = phone; state.bizname = bizname;
+state.biztype = document.getElementById('f_biztype').value.trim();
+state.challenge = challenge; state.goals = goals;
+state.source = document.getElementById('f_source').value.trim();
+localStorage.setItem('tcw_client', JSON.stringify({name,email,phone,bizname}));
+document.getElementById('clientNameDisplay').textContent = name.split(' ')[0];
+toast('Assessment Saved ✓', 'Now select your service tier below.');
+goStep(2);
+}
+function selectTier(el, name, full) {
+document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('selected'));
+el.classList.add('selected');
+state.tierName = name; state.tierFull = full;
+document.getElementById('btnToPayment').style.display = 'block';
+toast('Tier Selected ✓', name + ' — $' + full + '/yr');
+setTimeout(() => {
+document.getElementById('btnToPayment').scrollIntoView({behavior:'smooth',block:'nearest'});
+}, 300);
+if (!state.tierSelectedFired) {
+state.tierSelectedFired = true;
+sendToZapier({
+event: 'tier_selected',
+timestamp: new Date().toISOString(),
+client_name: state.name,
+email: state.email,
+phone: state.phone,
+business_name: state.bizname,
+service_tier: name,
+tier_annual_price: full
+});
+}
+}
+function buildPayOptions() {
+const full = state.tierFull;
+const plan2 = Math.ceil(full / 2);
+const plan3 = Math.ceil(full / 3);
+const opts = [
+{ id:'full', label:'Pay in Full', name:'Single Payment', detail:'One payment, no monthly fees', price:'$'+full, planText:'Single Payment', due:full },
+{ id:'half', label:'2-Payment Plan', name:'Split in Half', detail:'50% today, 50% in 30 days — no extra charge', price:'$'+plan2+' ×2', planText:'2 Payments of $'+plan2, due:plan2 },
+{ id:'third', label:'3-Payment Plan', name:'3-Month Plan', detail:'3 equal payments — first due today', price:'$'+plan3+' ×3', planText:'3 Payments of $'+plan3, due:plan3 },
+];
+const container = document.getElementById('payOptions');
+container.innerHTML = opts.map(o => `
+<div class="pay-option" id="po_${o.id}" onclick="selectPay('${o.id}','${o.planText}',${o.due})">
+<div class="pay-option-label">${o.label}</div>
+<div class="pay-option-name">${o.name}</div>
+<div class="pay-option-detail">${o.detail}</div>
+<div class="pay-option-price">${o.price}</div>
+</div>
+`).join('');
+}
+function selectPay(id, planText, due) {
+document.querySelectorAll('.pay-option').forEach(p => p.classList.remove('selected'));
+document.getElementById('po_'+id).classList.add('selected');
+state.payPlan = planText; state.payPlanId = id; state.payDue = due;
+document.getElementById('sumClient').textContent = state.name;
+document.getElementById('sumTier').textContent = state.tierName;
+document.getElementById('sumFull').textContent = '$'+state.tierFull+'/yr';
+document.getElementById('sumPlan').textContent = planText;
+document.getElementById('sumDue').textContent = '$'+due+' due today';
+}
+function sendToZapier(payload) {
+fetch(ZAPIER_WEBHOOK_URL, {
+method: 'POST',
+body: JSON.stringify(payload)
+}).catch(err => console.error('Zapier webhook failed:', err));
+}
+function generatePortalId() {
+const chars = 'abcdefghjkmnpqrstuvwxyz23456789';
+let id = '';
+for (let i = 0; i < 8; i++) id += chars[Math.floor(Math.random() * chars.length)];
+return id;
+}
+function getSquareLink() {
+if (!SQUARE_CHECKOUT.enabled) return '';
+const tier = SQUARE_CHECKOUT.links[state.tierName];
+return tier ? (tier[state.payPlanId] || '') : '';
+}
+function completeEnrollment() {
+if(!state.payPlan) { toast('Select a Payment Plan', 'Choose how you would like to pay before continuing.'); return; }
+const squareLink = getSquareLink();
+let paymentStatus;
+if (SQUARE_CHECKOUT.enabled && squareLink) {
+window.open(squareLink, '_blank', 'noopener');
+toast('Opening Secure Checkout', 'Finish your payment in the Square tab, then come back here.');
+paymentStatus = 'square_checkout_opened_pending_confirmation';
+} else if (SQUARE_CHECKOUT.enabled && !squareLink) {
+toast('Invoice To Follow', 'We will email your secure Square payment link to complete checkout.');
+paymentStatus = 'square_link_missing_pending_invoice';
+} else {
+paymentStatus = 'invoice_manual_pending';
+}
+const portalId = generatePortalId();
+const portalUrl = 'https://onboard.essential-distribution.com/portal.html?id=' + portalId;
+document.getElementById('confirmName').textContent = 'Almost there, ' + state.name.split(' ')[0] + '.';
+document.getElementById('confirmSub').textContent = state.bizname + ' — finish your payment in the Square tab. Your account activates once payment is confirmed.';
+document.getElementById('conf_name').textContent = state.name;
+document.getElementById('conf_email').textContent = state.email;
+document.getElementById('conf_biz').textContent = state.bizname;
+document.getElementById('conf_tier').textContent = state.tierName;
+document.getElementById('conf_plan').textContent = state.payPlan;
+document.getElementById('conf_due').textContent = '$'+state.payDue;
+document.getElementById('conf_portal_link').textContent = portalUrl;
+document.getElementById('conf_portal_link').href = portalUrl;
+document.getElementById('conf_portal_cta').href = 'portal.html?id=' + portalId;
+const saved = JSON.parse(localStorage.getItem('tcw_client')||'{}');
+localStorage.setItem('tcw_client', JSON.stringify({...saved, tier:state.tierName, plan:state.payPlan, due:state.payDue, enrolled:true, portalId}));
+sendToZapier({
+event: 'enrollment_completed',
+timestamp: new Date().toISOString(),
+client_name: state.name,
+email: state.email,
+phone: state.phone,
+business_name: state.bizname,
+business_type: state.biztype,
+biggest_challenge: state.challenge,
+ninety_day_goals: state.goals,
+lead_source: state.source,
+service_tier: state.tierName,
+tier_annual_price: state.tierFull,
+payment_plan: state.payPlan,
+amount_due_today: state.payDue,
+payment_status: paymentStatus,
+payment_confirmed: false,
+portal_id: portalId,
+portal_url: portalUrl
+});
+spawnConfetti();
+goStep(4);
+}
+function goStep(n) {
+if(n===3) {
+if(!state.tierName) { toast('Select a Tier First','Please choose a service tier before continuing.'); return; }
+document.getElementById('selectedTierSummary').textContent = state.tierName + ' — $'+state.tierFull+'/yr';
+document.getElementById('sumTier').textContent = state.tierName;
+document.getElementById('sumFull').textContent = '$'+state.tierFull+'/yr';
+document.getElementById('sumDue').textContent = '—';
+document.getElementById('sumPlan').textContent = '—';
+buildPayOptions();
+}
+document.querySelectorAll('.flow-page').forEach(p => p.classList.remove('active'));
+document.querySelectorAll('.progress-step').forEach((s,i) => {
+s.classList.remove('active','done');
+if(i+1 < n) s.classList.add('done');
+if(i+1 === n) s.classList.add('active');
+});
+document.getElementById('step'+n).classList.add('active');
+window.scrollTo({top:0,behavior:'smooth'});
+}
+function spawnConfetti() {
+const colors = ['#C9A84C','#e8c96a','#2ecc71','#ffffff'];
+for(let i=0;i<50;i++){
+setTimeout(()=>{
+const d = document.createElement('div');
+Object.assign(d.style, {
+position:'fixed', width:'7px', height:'7px', borderRadius:'50%',
+left:Math.random()*100+'vw', top:'-10px',
+background:colors[Math.floor(Math.random()*colors.length)],
+animation:'confettiFall 3s ease-in forwards',
+zIndex:'999', pointerEvents:'none',
+animationDuration:(2+Math.random()*2)+'s'
+});
+document.body.appendChild(d);
+setTimeout(()=>d.remove(),4000);
+}, i*40);
+}
+}
+const style = document.createElement('style');
+style.textContent = '@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}';
+document.head.appendChild(style);
+</script>
+</body>
+</html>
