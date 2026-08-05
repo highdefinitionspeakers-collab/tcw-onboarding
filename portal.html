@@ -356,12 +356,13 @@ footer{
 const REFERRAL_PARTNER_NAME = 'Credit RC';
 const REFERRAL_PARTNER_URL  = 'https://creditrc.com';
 document.getElementById('crRequestLink').href = REFERRAL_PARTNER_URL;
-const ZAPIER_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/catch/27967898/469svld/';
+const INTAKE_ENDPOINT = '/api/intake';
 function sendToZapier(payload) {
-  fetch(ZAPIER_WEBHOOK_URL, {
+  fetch(INTAKE_ENDPOINT, {
     method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
-  }).catch(err => console.error('Zapier webhook failed:', err));
+  }).catch(err => console.error('Intake logging failed:', err));
 }
 const PAID = [
   {n:1,title:'Form the Legal Business Entity',sub:'Register LLC or corporation with your state',desc:'Register the LLC or corporation with your state. This is the core foundation. It usually has a filing fee.',fields:[{k:'Entity Type',p:'LLC / Corporation'},{k:'State Filed',p:'e.g. Texas'},{k:'File Date',p:'MM/DD/YYYY'},{k:'File Number',p:'State file number'}]},
