@@ -79,6 +79,16 @@ async function handleIntake(request, env) {
         'Submitted At': p.timestamp||new Date().toISOString(),
         'Source': p.source||'Landing page intake',
       });
+    } else if (event === 'compliance_lead_submitted') {
+      await create(token, T.clients, {
+        'Name': p.client_name||'', 'Email': p.email||'', 'Phone': p.phone||'',
+        'Business Name': p.business_name||'', 'Business Type': p.business_type||'',
+        'Biggest Challenge': p.biggest_challenge||'', '90-Day Goals': p.ninety_day_goals||'',
+        'Lead Source': p.lead_source||'Texas Compliance Rescue Landing Page',
+        'Amount Due Today': n(p.amount_due_today),
+        'Enrolled Date': p.timestamp||new Date().toISOString(),
+        'Payment Confirmed': p.payment_confirmed===true,
+      });
     } else {
       return j({ ok:false, error:'unknown event: '+event }, 400);
     }
